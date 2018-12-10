@@ -46,6 +46,8 @@ class User(AbstractUser, TimestampableModelMixin):
 
     username = None
     email = models.EmailField(_('email address'), unique=True)
+    first_name = models.CharField(_('first name'), max_length=30, blank=True)
+    last_name = models.CharField(_('last name'), max_length=30, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -57,10 +59,13 @@ class User(AbstractUser, TimestampableModelMixin):
         verbose_name_plural = _('users')
 
     def get_full_name(self):
-        return self.email
+        return "{first_name} {last_name}".format(
+            first_name=self.first_name, last_name=self.last_name)
 
     def get_short_name(self):
-        return self.get_full_name()
+        return "{first_name}".format(first_name=self.first_name)
 
     def __str__(self):
-        return self.email
+        return "User: {first_name} {last_name}. Email: {email}".format(
+            first_name=self.first_name, last_name=self.last_name,
+            email=self.email)
