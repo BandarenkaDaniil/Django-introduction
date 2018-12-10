@@ -1,9 +1,10 @@
 from rest_framework import generics, permissions
 
-from railways.serializers import \
-    TrainSerializer, \
-    StationSerializer, \
+from railways.serializers import (
+    TrainSerializer,
+    StationSerializer,
     RideSerializer
+)
 
 from railways.models import Train
 from railways.models import Station
@@ -12,38 +13,38 @@ from railways.models import Ride
 from railways.permissions import IsSuperUserOrReadOnly
 
 
-class TrainList(generics.ListCreateAPIView):
+class TrainListAPI(generics.ListCreateAPIView):
     permission_classes = (IsSuperUserOrReadOnly, )
 
     queryset = Train.objects.all()
     serializer_class = TrainSerializer
 
 
-class TrainDetail(generics.RetrieveUpdateDestroyAPIView):
+class TrainDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsSuperUserOrReadOnly, )
 
     queryset = Train.objects.all()
     serializer_class = TrainSerializer
 
 
-class StationList(generics.ListCreateAPIView):
+class StationListAPI(generics.ListCreateAPIView):
     queryset = Station.objects.all()
     serializer_class = StationSerializer
 
 
-class StationDetail(generics.RetrieveUpdateDestroyAPIView):
+class StationDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsSuperUserOrReadOnly, )
 
     queryset = Station.objects.all()
     serializer_class = StationSerializer
 
 
-class RideList(generics.ListCreateAPIView):
+class RideListAPI(generics.ListCreateAPIView):
     queryset = Ride.objects.all()
     serializer_class = RideSerializer
 
 
-class RideDetail(generics.RetrieveUpdateDestroyAPIView):
+class RideDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsSuperUserOrReadOnly,)
 
     queryset = Ride.objects.all()

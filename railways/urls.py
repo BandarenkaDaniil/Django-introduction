@@ -6,12 +6,12 @@ from railways import views
 
 
 urlpatterns = [
-    path('trains/', views.TrainList.as_view()),
-    path('trains/<int:pk>/', views.TrainDetail.as_view()),
-    path('stations/', views.StationList.as_view()),
-    path('stations/<int:pk>/', views.StationDetail.as_view()),
-    path('rides/', views.RideList.as_view()),
-    path('rides/<int:pk>/', views.RideDetail.as_view()),
+    path('trains/', views.TrainListAPI.as_view()),
+    path('trains/<int:pk>/', views.TrainDetailAPI.as_view()),
+    path('stations/', views.StationListAPI.as_view()),
+    path('stations/<int:pk>/', views.StationDetailAPI.as_view()),
+    path('rides/', views.RideListAPI.as_view()),
+    path('rides/<int:pk>/', views.RideDetailAPI.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
