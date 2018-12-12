@@ -12,8 +12,8 @@ urlpatterns = [
     path('api-token-auth', obtain_jwt_token),
     path('api-token-verify', verify_jwt_token),
     path('api/', include([
-        path('railways/', include('railways.api_urls')),
-        path('users/', include('users.api_urls'))
+        path('railways/', include('railways.urls.api_urls')),
+        path('users/', include('users.urls.api_urls'))
     ])),
     path('railways/', include('railways.urls')),
     path('users/', include('users.urls')),
