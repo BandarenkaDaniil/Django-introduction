@@ -14,7 +14,7 @@ from railways.permissions import IsSuperUserOrReadOnly
 
 
 class TrainListAPI(generics.ListCreateAPIView):
-    permission_classes = (IsSuperUserOrReadOnly, )
+    permission_classes = (permissions.IsAuthenticated, )
 
     queryset = Train.objects.all()
     serializer_class = TrainSerializer
@@ -28,6 +28,8 @@ class TrainDetailAPI(generics.RetrieveUpdateDestroyAPIView):
 
 
 class StationListAPI(generics.ListCreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
     queryset = Station.objects.all()
     serializer_class = StationSerializer
 
@@ -40,6 +42,8 @@ class StationDetailAPI(generics.RetrieveUpdateDestroyAPIView):
 
 
 class RideListAPI(generics.ListCreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
     queryset = Ride.objects.all()
     serializer_class = RideSerializer
 
