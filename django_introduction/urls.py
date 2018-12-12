@@ -15,6 +15,6 @@ urlpatterns = [
         path('railways/', include('railways.urls.api_urls')),
         path('users/', include('users.urls.api_urls'))
     ])),
-    path('railways/', include('railways.urls')),
-    path('users/', include('users.urls')),
+    path('railways/', include('railways.urls.urls')),
+    path('users/', include('users.urls.urls')),
 ]
