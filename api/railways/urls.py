@@ -1,8 +1,8 @@
-from django.urls import path, include
+from django.urls import path
 
 from rest_framework.urlpatterns import format_suffix_patterns
 
-from railways import views
+from api.railways import views
 
 
 urlpatterns = [
