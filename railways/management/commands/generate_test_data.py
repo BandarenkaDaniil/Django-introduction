@@ -13,10 +13,8 @@ from railways.models import Track
 class Command(BaseCommand):
     help = 'Generate test data for project\'s database'
 
-    def handle(self, *args, **options):
-        # deleting all stations is enough to drop all data
-        Station.objects.all().delete()
-
+    @staticmethod
+    def generate_stations():
         filename = 'test_data/stations.csv'
 
         with open(filename) as f:
@@ -24,6 +22,8 @@ class Command(BaseCommand):
             for row in reader:
                 Station.objects.create(title=row[0], country=row[1])
 
+    @staticmethod
+    def generate_tracks():
         filename = 'test_data/tracks.csv'
 
         with open(filename) as f:
@@ -41,6 +41,8 @@ class Command(BaseCommand):
                     length=row[2]
                 )
 
+    @staticmethod
+    def generate_routes():
         filename = 'test_data/routes.csv'
 
         with open(filename) as f:
@@ -77,3 +79,15 @@ class Command(BaseCommand):
                         previous_item=previous_item
                     )
                     previous_item = item
+
+    def handle(self, *args, **options):
+        # deleting all stations is enough to drop all data for now
+        Station.objects.all().delete()
+
+        self.generate_stations()
+        self.generate_tracks()
+        self.generate_routes()
+
+
+
+
