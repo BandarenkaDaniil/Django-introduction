@@ -1,10 +1,13 @@
-from rest_framework import serializers
+import itertools
 
-# from railways.models import Train
-from railways.models import Station
-from railways.models import Track
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
+
 from railways.models import Route
 from railways.models import RouteItem
+from railways.models import Station
+from railways.models import Track
+# from railways.models import Train
 
 
 # class TrainSerializer(serializers.ModelSerializer):
@@ -17,41 +20,72 @@ from railways.models import RouteItem
 class StationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Station
-        fields = (
-            'id', 'title', 'country', 'created_at', 'updated_at'
-        )
-        read_only_fields = (
-            'id', 'created_at', 'updated_at',
-        )
+        fields = ('id', 'title', 'country')
 
 
 class TrackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Track
-        fields = (
-            'id', 'departure_station', 'arrival_station',
-            'length', 'created_at', 'updated_at'
-        )
-        read_only_fields = (
-            'id', 'created_at', 'updated_at',
-        )
-
-
-class RouteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Route
-        fields = (
-            'id', 'departure_station', 'arrival_station',
-            'created_at', 'updated_at'
-        )
-        read_only_fields = ('id', 'created_at', 'updated_at',)
+        fields = ('id', 'departure_station', 'arrival_station', 'length')
 
 
 class RouteItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = RouteItem
-        fields = (
-            'id', 'route', 'track', 'previous_item',
-            'created_at', 'updated_at'
+        fields = ('track', )
+
+
+class RouteSerializer(serializers.ModelSerializer):
+    items = RouteItemSerializer(many=True)
+
+    class Meta:
+        model = Route
+        fields = ('id', 'items', )
+
+    @staticmethod
+    def validate_items(attrs):
+        """
+            Checks if got tracks form correct sequence.
+        """
+        tracks = list(i['track'] for i in attrs)
+
+        if len(tracks) > 1:
+            # form two independent iterators to get
+            # tracks pairs like (1,2), (2,3), (3, 4) and so on
+            iter1, iter2 = itertools.tee(tracks)
+            next(iter2)
+
+            tracks_pairs = list(zip(iter1, iter2))
+
+            for pair in tracks_pairs:
+                # check every pair to make sure that arrival station
+                # of one track is equal to another's departure
+                if pair[0].arrival_station != pair[1].departure_station:
+                    raise ValidationError
+
+        return attrs
+
+    def create(self, validated_data):
+        route_items_data = validated_data.pop('items')
+
+        # Route departure and arrival stations are
+        # departure station of the first track in sequence and
+        # arrival of the last.
+        # Even if sequence consists of one track.
+        route = Route.objects.create(
+            departure_station=route_items_data[0]['track'].departure_station,
+            arrival_station=route_items_data[-1]['track'].arrival_station
         )
-        read_only_fields = ('id', 'created_at', 'updated_at',)
+
+        # previous item of the first route item
+        # is always null
+        previous_item = None
+        for route_item in route_items_data:
+            item = RouteItem.objects.create(
+                route=route,
+                track=route_item['track'],
+                previous_item=previous_item
+            )
+            previous_item = item
+
+        return route

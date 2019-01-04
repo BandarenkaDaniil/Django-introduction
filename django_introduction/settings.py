@@ -39,10 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',
-    'railways',
+
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+
+    'drf_yasg',
+
+    'railways',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -117,6 +121,10 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
+}
+
+SWAGGER_SETTINGS = {
+   'DEFAULT_INFO': 'api.urls.api_info',
 }
 
 # Internationalization
