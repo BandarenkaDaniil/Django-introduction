@@ -42,7 +42,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractUser, TimestampableModelMixin):
-    """User model."""
+    """User model with email using instead of first/last names."""
 
     username = None
     email = models.EmailField(_('email address'), unique=True)
