@@ -88,3 +88,13 @@ class Ride(TimestampableModelMixin, models.Model):
         return 'Ride. {route}. {train}'.format(
             route=self.route,
             train=self.train)
+
+
+class Ticket(TimestampableModelMixin, models.Model):
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    ride = models.ForeignKey(Ride, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return 'Ticket. {customer}. {ride}'.format(
+            customer=self.customer,
+            ride=self.ride)
