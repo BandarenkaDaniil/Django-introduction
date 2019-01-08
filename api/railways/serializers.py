@@ -4,6 +4,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 from rest_framework.exceptions import ValidationError
 
+
 from railways.models import (
     Ride,
     Route,
@@ -53,6 +54,8 @@ class RouteItemSerializer(serializers.ModelSerializer):
 
 
 class RouteSerializer(serializers.ModelSerializer):
+    """TODO: add update method"""
+
     items = RouteItemSerializer(many=True)
     trains = TrainSerializer(many=True)
 
@@ -175,6 +178,3 @@ class RideSerializer(serializers.ModelSerializer):
             validated_data['amount'] = calculate_amount(validated_data['route'])
 
         return super().update(instance, validated_data)
-
-
-
