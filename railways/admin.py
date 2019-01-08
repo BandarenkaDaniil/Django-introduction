@@ -16,4 +16,3 @@ admin.site.register(Station)
 admin.site.register(Ticket)
 admin.site.register(Train)
 admin.site.register(Track)
-
