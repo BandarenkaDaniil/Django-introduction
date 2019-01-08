@@ -5,19 +5,6 @@ from users.models import User
 from railways.mixins.timestampable import TimestampableModelMixin
 
 
-class Train(TimestampableModelMixin, models.Model):
-    # TRAIN_TYPES = (
-    #     ('economy', _('economy')),
-    #     ('business', _('business')),
-    #     ('comfort', _('comfort'))
-    # )
-    #
-    # type = models.CharField(max_length=10, choices=TRAIN_TYPES)
-
-    def __str__(self):
-        return 'Train: ID: {id}'.format(id=self.id)
-
-
 class Station(TimestampableModelMixin, models.Model):
     title = models.CharField(max_length=40)
     country = models.CharField(max_length=40)
@@ -77,17 +64,31 @@ class RouteItem(TimestampableModelMixin, models.Model):
             track=self.track)
 
 
+class Train(TimestampableModelMixin, models.Model):
+    # TRAIN_TYPES = (
+    #     ('economy', _('economy')),
+    #     ('business', _('business')),
+    #     ('comfort', _('comfort'))
+    # )
+    #
+    # type = models.CharField(max_length=10, choices=TRAIN_TYPES)
+    route = models.ForeignKey(Route, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return 'Train: ID: {id}'.format(id=self.id)
+
+
 class Ride(TimestampableModelMixin, models.Model):
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
-    train = models.ForeignKey(Train, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField()
     departure_date = models.DateTimeField()
     arrival_date = models.DateTimeField()
 
     def __str__(self):
-        return 'Ride. {route}. {train}'.format(
+        return 'Ride. {route}. Departure: {departure} - Arrival {arrival}'.format(
             route=self.route,
-            train=self.train)
+            departure=self.departure_date,
+            arrival=self.arrival_date)
 
 
 class Ticket(TimestampableModelMixin, models.Model):
