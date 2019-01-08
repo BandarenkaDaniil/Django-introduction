@@ -3,14 +3,21 @@ import itertools
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from railways.models import Route, RouteItem, Station, Track
+from railways.models import (
+    Ride,
+    Route,
+    RouteItem,
+    Station,
+    Ticket,
+    Track,
+    Train,
+)
 
 
-# class TrainSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Train
-#         fields = ('id', 'type', 'created_at', 'updated_at')
-#         read_only_fields = ('id', 'created_at', 'updated_at', )
+class TrainSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Train
+        fields = ('id', 'type', )
 
 
 class StationSerializer(serializers.ModelSerializer):
@@ -32,6 +39,8 @@ class RouteItemSerializer(serializers.ModelSerializer):
 
 
 class RouteSerializer(serializers.ModelSerializer):
+    """TODO: add update method"""
+
     items = RouteItemSerializer(many=True)
 
     class Meta:
@@ -87,3 +96,15 @@ class RouteSerializer(serializers.ModelSerializer):
             previous_item = item
 
         return route
+
+
+class RideSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ride
+        fields = ('id', 'route', 'amount', 'train', 'departure_date', 'arrival_date', )
+
+
+class TicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
+        fields = ('id', 'customer', 'ride')
