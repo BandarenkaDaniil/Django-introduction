@@ -1,21 +1,21 @@
 from django.db import models
-# from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _
 
 # from users.models import User
 from railways.mixins.timestampable import TimestampableModelMixin
 
 
-# class Train(TimestampableModelMixin, models.Model):
-#     TRAIN_TYPES = (
-#         ('business', _('business')),
-#         ('economy', _('economy')),
-#         ('freight', _('freight'))
-#     )
-#     type = models.CharField(max_length=10, choices=TRAIN_TYPES)
-#
-#     def __str__(self):
-#         return 'Train: ID: {id} Type: {type}'.format(id=self.id,
-#                                                      type=self.type)
+class Train(TimestampableModelMixin, models.Model):
+    TRAIN_TYPES = (
+        ('economy', _('economy')),
+        ('business', _('business')),
+        ('comfort', _('comfort'))
+    )
+
+    type = models.CharField(max_length=10, choices=TRAIN_TYPES)
+
+    def __str__(self):
+        return 'Train: ID: {id} Type: {type}'.format(id=self.id, type=self.type)
 
 
 class Station(TimestampableModelMixin, models.Model):
