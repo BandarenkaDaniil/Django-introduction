@@ -17,7 +17,7 @@ from railways.models import (
 class TrainSerializer(serializers.ModelSerializer):
     class Meta:
         model = Train
-        fields = ('id', 'type', )
+        fields = ('id', )
 
 
 class StationSerializer(serializers.ModelSerializer):

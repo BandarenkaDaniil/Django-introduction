@@ -6,16 +6,16 @@ from railways.mixins.timestampable import TimestampableModelMixin
 
 
 class Train(TimestampableModelMixin, models.Model):
-    TRAIN_TYPES = (
-        ('economy', _('economy')),
-        ('business', _('business')),
-        ('comfort', _('comfort'))
-    )
-
-    type = models.CharField(max_length=10, choices=TRAIN_TYPES)
+    # TRAIN_TYPES = (
+    #     ('economy', _('economy')),
+    #     ('business', _('business')),
+    #     ('comfort', _('comfort'))
+    # )
+    #
+    # type = models.CharField(max_length=10, choices=TRAIN_TYPES)
 
     def __str__(self):
-        return 'Train: ID: {id} Type: {type}'.format(id=self.id, type=self.type)
+        return 'Train: ID: {id}'.format(id=self.id)
 
 
 class Station(TimestampableModelMixin, models.Model):
