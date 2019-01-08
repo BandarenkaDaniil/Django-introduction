@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext as _
 
-# from users.models import User
+from users.models import User
 from railways.mixins.timestampable import TimestampableModelMixin
 
 
@@ -42,8 +42,6 @@ class Track(TimestampableModelMixin, models.Model):
 
 
 class Route(TimestampableModelMixin, models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # train = models.ForeignKey(Train, on_delete=models.CASCADE)
     departure_station = models.ForeignKey(Station, on_delete=models.CASCADE,
                                           related_name="routes_departure")
     arrival_station = models.ForeignKey(Station, on_delete=models.CASCADE,
@@ -77,3 +75,16 @@ class RouteItem(TimestampableModelMixin, models.Model):
         return 'Route item. {route}. Track: {track}'.format(
             route=self.route,
             track=self.track)
+
+
+class Ride(TimestampableModelMixin, models.Model):
+    route = models.ForeignKey(Route, on_delete=models.CASCADE)
+    train = models.ForeignKey(Train, on_delete=models.CASCADE)
+    amount = models.PositiveIntegerField()
+    departure_date = models.DateTimeField()
+    arrival_date = models.DateTimeField()
+
+    def __str__(self):
+        return 'Ride. {route}. {train}'.format(
+            route=self.route,
+            train=self.train)
