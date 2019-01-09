@@ -39,8 +39,6 @@ class RouteItemSerializer(serializers.ModelSerializer):
 
 
 class RouteSerializer(serializers.ModelSerializer):
-    """TODO: add update method"""
-
     items = RouteItemSerializer(many=True)
 
     class Meta:
@@ -131,6 +129,12 @@ class RideSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ride
         fields = ('id', 'route', 'amount', 'departure_date', 'arrival_date', )
+
+    def validate(self, attrs):
+        if attrs['arrival_date'] < attrs['departure_date']:
+            raise ValidationError('Arrival cannot be after Departure')
+
+        return attrs
 
 
 class TicketSerializer(serializers.ModelSerializer):
