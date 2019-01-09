@@ -52,6 +52,9 @@ class RouteSerializer(serializers.ModelSerializer):
         """
             Checks if got tracks form correct sequence.
         """
+        if not attrs:
+            raise ValidationError("No tracks input")
+
         tracks = list(i['track'] for i in attrs)
 
         if len(tracks) > 1:
@@ -73,29 +76,55 @@ class RouteSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        route_items_data = validated_data.pop('items')
+        new_track_list = [item['track'] for item in validated_data['items']]
 
         # Route departure and arrival stations are
         # departure station of the first track in sequence and
         # arrival of the last.
         # Even if sequence consists of one track.
         route = Route.objects.create(
-            departure_station=route_items_data[0]['track'].departure_station,
-            arrival_station=route_items_data[-1]['track'].arrival_station
+            departure_station=new_track_list[0].departure_station,
+            arrival_station=new_track_list[-1].arrival_station
         )
 
         # previous item of the first route item
         # is always null
         previous_item = None
-        for route_item in route_items_data:
+        for track in new_track_list:
             item = RouteItem.objects.create(
                 route=route,
-                track=route_item['track'],
+                track=track,
                 previous_item=previous_item
             )
             previous_item = item
 
         return route
+
+    def update(self, instance, validated_data):
+        new_track_list = [item['track'] for item in validated_data['items']]
+
+        # Route departure and arrival stations are
+        # departure station of the first track in sequence and
+        # arrival of the last.
+        # Even if sequence consists of one track.
+        Route.objects.filter(id=instance.id).update(
+            departure_station=new_track_list[0].departure_station,
+            arrival_station=new_track_list[-1].arrival_station)
+
+        RouteItem.objects.filter(route=instance).delete()
+
+        # previous item of the first route item
+        # is always null
+        previous_item = None
+        for track in new_track_list:
+            item = RouteItem.objects.create(
+                route=instance,
+                track=track,
+                previous_item=previous_item
+            )
+            previous_item = item
+
+        return instance
 
 
 class RideSerializer(serializers.ModelSerializer):
