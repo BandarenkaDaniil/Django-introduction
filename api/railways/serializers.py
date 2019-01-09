@@ -127,9 +127,6 @@ class RouteSerializer(serializers.ModelSerializer):
             departure_station=new_track_list[0].departure_station,
             arrival_station=new_track_list[-1].arrival_station)
 
-        # delete all items and create new
-        # imho it's easier to understanding
-        # than, for example, invent smart algorithms :)
         RouteItem.objects.filter(route=instance).delete()
 
         # previous item of the first route item
