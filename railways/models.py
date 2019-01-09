@@ -10,8 +10,7 @@ class Station(TimestampableModelMixin, models.Model):
     country = models.CharField(max_length=40)
 
     def __str__(self):
-        return 'Station: {title} ({country})'.format(title=self.title,
-                                                     country=self.country)
+        return '{title} ({country})'.format(title=self.title, country=self.country)
 
 
 class Track(TimestampableModelMixin, models.Model):
@@ -22,7 +21,7 @@ class Track(TimestampableModelMixin, models.Model):
     length = models.PositiveIntegerField()
 
     def __str__(self):
-        return 'Track. From {dep_st} to {arr_st}. Length: {length}'.format(
+        return 'Track from {dep_st} to {arr_st}. Length: {length}'.format(
             dep_st=self.departure_station,
             arr_st=self.arrival_station,
             length=self.length)
@@ -35,7 +34,7 @@ class Route(TimestampableModelMixin, models.Model):
                                         related_name="routes_arrival")
 
     def __str__(self):
-        return 'Route. From {dep_station} to {arr_station}'.format(
+        return 'Route from {dep_station} to {arr_station}'.format(
             dep_station=self.departure_station,
             arr_station=self.arrival_station)
 
@@ -59,7 +58,7 @@ class RouteItem(TimestampableModelMixin, models.Model):
     )
 
     def __str__(self):
-        return 'Route item. {route}. Track: {track}'.format(
+        return 'Route item for {route}, {track}'.format(
             route=self.route,
             track=self.track)
 
