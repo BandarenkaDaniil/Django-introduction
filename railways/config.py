@@ -1,1 +1,1 @@
-COST_PER_KM = 1.5
+COST_PER_KM = 2

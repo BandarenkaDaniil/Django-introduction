@@ -113,6 +113,9 @@ class Command(BaseCommand):
     def generate_rides(route, rides):
         for ride in rides:
             amount = calculate_amount(route)
+            total_ride_length = 0
+            for item in route.items.all():
+                total_ride_length += item.track.length
 
             new_ride = Ride.objects.create(
                 departure_date=datetime(*ride['departure_date'], tzinfo=pytz.UTC),
@@ -170,8 +173,6 @@ class Command(BaseCommand):
         self.generate_data()
 
         print('Done.')
-
-
 
 
 
