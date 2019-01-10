@@ -15,9 +15,9 @@ class Station(TimestampableModelMixin, models.Model):
 
 class Track(TimestampableModelMixin, models.Model):
     departure_station = models.ForeignKey(Station, on_delete=models.CASCADE,
-                                          related_name="tracks_departure")
+                                          related_name='outcoming_tracks')
     arrival_station = models.ForeignKey(Station, on_delete=models.CASCADE,
-                                        related_name="tracks_arrival")
+                                        related_name='incoming_tracks')
     length = models.PositiveIntegerField()
 
     def __str__(self):
@@ -29,9 +29,9 @@ class Track(TimestampableModelMixin, models.Model):
 
 class Route(TimestampableModelMixin, models.Model):
     departure_station = models.ForeignKey(Station, on_delete=models.CASCADE,
-                                          related_name="routes_departure")
+                                          related_name="outcoming_routes")
     arrival_station = models.ForeignKey(Station, on_delete=models.CASCADE,
-                                        related_name="routes_arrival")
+                                        related_name="incoming_routes")
 
     def __str__(self):
         return 'Route from {dep_station} to {arr_station}'.format(
@@ -71,14 +71,14 @@ class Train(TimestampableModelMixin, models.Model):
     # )
     #
     # type = models.CharField(max_length=10, choices=TRAIN_TYPES)
-    route = models.ForeignKey(Route, on_delete=models.CASCADE)
+    route = models.ForeignKey(Route, on_delete=models.CASCADE, related_name='trains')
 
     def __str__(self):
         return 'Train: ID: {id}'.format(id=self.id)
 
 
 class Ride(TimestampableModelMixin, models.Model):
-    route = models.ForeignKey(Route, on_delete=models.CASCADE)
+    route = models.ForeignKey(Route, on_delete=models.CASCADE, related_name='rides')
     amount = models.PositiveIntegerField()
     departure_date = models.DateTimeField()
     arrival_date = models.DateTimeField()
@@ -91,8 +91,8 @@ class Ride(TimestampableModelMixin, models.Model):
 
 
 class Ticket(TimestampableModelMixin, models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
-    ride = models.ForeignKey(Ride, on_delete=models.CASCADE)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tickets')
+    ride = models.ForeignKey(Ride, on_delete=models.CASCADE, related_name='tickets')
 
     def __str__(self):
         return 'Ticket. {customer}. {ride}'.format(
