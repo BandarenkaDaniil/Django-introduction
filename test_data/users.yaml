@@ -1,0 +1,20 @@
+users:
+#    - email: danik@example.com
+#      first_name: Danik
+#      last_name: Bondarenko
+#      password: password
+
+    - email: ivan@example.com
+      first_name: Ivan
+      last_name: Ivanov
+      password: ivan1234
+
+    - email: vladimir@example.com
+      first_name: Vladimir
+      last_name: Melnichenko
+      password: vladimir777
+
+    - email: andrey@example.com
+      first_name: Andrey
+      last_name: Bulygin
+      password: andreybulygin

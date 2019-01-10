@@ -64,6 +64,6 @@ class User(AbstractUser, TimestampableModelMixin):
         return "{first_name}".format(first_name=self.first_name)
 
     def __str__(self):
-        return "User: {first_name} {last_name}. Email: {email}".format(
+        return "User: {first_name} {last_name} ({email})".format(
             first_name=self.first_name, last_name=self.last_name,
             email=self.email)
