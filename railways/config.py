@@ -1,1 +1,0 @@
-COST_PER_KM = 2

@@ -17,6 +17,8 @@ from railways.models import (
 
 from railways.utils import calculate_amount
 
+from railways.utils import calculate_amount
+
 
 class TrainSerializer(serializers.ModelSerializer):
     class Meta:
@@ -127,6 +129,9 @@ class RouteSerializer(serializers.ModelSerializer):
             departure_station=new_track_list[0].departure_station,
             arrival_station=new_track_list[-1].arrival_station)
 
+        # delete all items and create new
+        # imho it's easier to understanding
+        # than, for example, invent smart algorithms :)
         RouteItem.objects.filter(route=instance).delete()
 
         # previous item of the first route item
@@ -175,3 +180,4 @@ class RideSerializer(serializers.ModelSerializer):
             validated_data['amount'] = calculate_amount(validated_data['route'])
 
         return super().update(instance, validated_data)
+
