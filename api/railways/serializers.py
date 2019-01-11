@@ -1,6 +1,7 @@
 import itertools
 
 from rest_framework import serializers
+from rest_framework.validators import UniqueTogetherValidator
 from rest_framework.exceptions import ValidationError
 
 from railways.models import (
@@ -13,23 +14,36 @@ from railways.models import (
     Train,
 )
 
+from railways.utils import calculate_amount
+
 
 class TrainSerializer(serializers.ModelSerializer):
     class Meta:
         model = Train
-        fields = ('id', 'route')
+        fields = ('id', 'route',)
 
 
 class StationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Station
         fields = ('id', 'title', 'country')
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Station.objects.all(),
+                fields=('title', 'country'),
+                message='This station already exists'
+            )
+        ]
 
 
 class TrackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Track
         fields = ('id', 'departure_station', 'arrival_station', 'length')
+
+    def validate(self, attrs):
+        if attrs['departure_station'] == attrs['arrival_station']:
+            raise ValidationError('Track cannot connect same stations')
 
 
 class RouteItemSerializer(serializers.ModelSerializer):
@@ -40,18 +54,19 @@ class RouteItemSerializer(serializers.ModelSerializer):
 
 class RouteSerializer(serializers.ModelSerializer):
     items = RouteItemSerializer(many=True)
+    trains = TrainSerializer(many=True)
 
     class Meta:
         model = Route
-        fields = ('id', 'items', )
+        fields = ('id', 'trains', 'items', )
 
     @staticmethod
     def validate_items(attrs):
         """
-            Checks if got tracks form correct sequence.
+            Checks if got items form correct sequence of tracks.
         """
         if not attrs:
-            raise ValidationError("No tracks input")
+            raise ValidationError("No items input")
 
         tracks = list(i['track'] for i in attrs)
 
@@ -109,6 +124,9 @@ class RouteSerializer(serializers.ModelSerializer):
             departure_station=new_track_list[0].departure_station,
             arrival_station=new_track_list[-1].arrival_station)
 
+        # delete all items and create new
+        # imho it's easier to understanding
+        # than, for example, invent smart algorithms :)
         RouteItem.objects.filter(route=instance).delete()
 
         # previous item of the first route item
@@ -125,19 +143,38 @@ class RouteSerializer(serializers.ModelSerializer):
         return instance
 
 
-class RideSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ride
-        fields = ('id', 'route', 'amount', 'departure_date', 'arrival_date', )
-
-    def validate(self, attrs):
-        if attrs['arrival_date'] < attrs['departure_date']:
-            raise ValidationError('Arrival cannot be after Departure')
-
-        return attrs
-
-
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = ('id', 'customer', 'ride')
+
+
+class RideSerializer(serializers.ModelSerializer):
+    tickets = TicketSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Ride
+        fields = ('id', 'route', 'amount', 'departure_date', 'arrival_date', 'tickets')
+        read_only_fields = ('amount', )
+
+    def validate(self, attrs):
+        if attrs['arrival_date'] <= attrs['departure_date']:
+            raise ValidationError('Arrival cannot be after Departure')
+
+        return attrs
+
+    def create(self, validated_data):
+        validated_data['amount'] = calculate_amount(validated_data['route'])
+
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        # if this ride's route is being changed
+        # we need to recalculate its amount
+        if instance.route != validated_data['route']:
+            validated_data['amount'] = calculate_amount(validated_data['route'])
+
+        return super().update(instance, validated_data)
+
+
+

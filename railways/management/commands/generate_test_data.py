@@ -7,7 +7,7 @@ from datetime import datetime
 from django.contrib.auth.hashers import make_password
 from django.core.management.base import BaseCommand
 
-from railways import config
+from railways.utils import calculate_amount
 
 from railways.models import Ride
 from railways.models import Route
@@ -112,11 +112,7 @@ class Command(BaseCommand):
     @staticmethod
     def generate_rides(route, rides):
         for ride in rides:
-            total_ride_length = 0
-            for item in route.items.all():
-                total_ride_length += item.track.length
-
-            amount = config.COST_PER_KM * total_ride_length
+            amount = calculate_amount(route)
 
             new_ride = Ride.objects.create(
                 departure_date=datetime(*ride['departure_date'], tzinfo=pytz.UTC),
