@@ -8,7 +8,7 @@ from users.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('email', 'password', 'first_name', 'last_name')
+        fields = ('id', 'email', 'password', 'first_name', 'last_name')
         extra_kwargs = {
             'password': {
                 'write_only': True,
@@ -22,14 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
-class UserLoginSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('email', 'password', 'first_name', 'last_name')
-        extra_kwargs = {
-            'password': {
-                'write_only': True,
-                'style': {'input_type': 'password'}
-            },
-        }
+class UserLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(style={'input_type': 'password'}, write_only=True)
 
