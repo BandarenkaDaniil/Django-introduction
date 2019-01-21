@@ -1,12 +1,17 @@
+from django.http import JsonResponse
+
 from rest_framework import generics, permissions
-from rest_framework.response import Response
+from rest_framework import views
 
 from api.railways.serializers import (
     RideSerializer,
+    SpecificRideSerializer,
+    UserTicketsSerializer,
     RouteSerializer,
     RouteItemSerializer,
     StationSerializer,
     TicketSerializer,
+    TicketBuySerializer,
     TrainSerializer,
     TrackSerializer,
 )
@@ -63,7 +68,7 @@ class TrackDetailAPI(generics.RetrieveUpdateDestroyAPIView):
 
 
 class RouteListAPI(generics.ListCreateAPIView):
-    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    # permission_classes = (permissions.IsAuthenticated,)
 
     queryset = Route.objects.all()
     serializer_class = RouteSerializer
@@ -104,11 +109,46 @@ class RideDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = RideSerializer
 
 
+class SpecificRidesAPI(generics.ListAPIView):
+    serializer_class = SpecificRideSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        departure_station = Station.objects.get(title=self.request.query_params['departure_station'])
+        arrival_station = Station.objects.get(title=self.request.query_params['arrival_station'])
+        departure_date = self.request.query_params['departure_date']
+
+        return Ride.objects.filter(departure_date=departure_date,
+                                   route__departure_station=departure_station,
+                                   route__arrival_station=arrival_station)
+
+
 class TicketListAPI(generics.ListCreateAPIView):
     # permission_classes = (permissions.IsAdminUser,)
 
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
+
+
+class UserTicket(generics.ListAPIView):
+    serializer_class = UserTicketsSerializer
+
+    def get_queryset(self):
+        return Ticket.objects.filter(customer=self.request.user)
+
+
+class BuyTicket(views.APIView):
+    def post(self, request):
+        serializer = TicketBuySerializer(data=request.data)
+        serializer.context['user'] = request.user
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save()
+
+        return JsonResponse(
+            {'status': 'Ticket purchased'},
+            status=201
+        )
 
 
 class TicketDetailAPI(generics.RetrieveUpdateDestroyAPIView):

@@ -154,12 +154,50 @@ class TicketSerializer(serializers.ModelSerializer):
         fields = ('id', 'customer', 'ride')
 
 
+class UserTicketsSerializer(serializers.ModelSerializer):
+    departure_station = serializers.ReadOnlyField(source='ride.route.departure_station.title')
+    arrival_station = serializers.ReadOnlyField(source='ride.route.arrival_station.title')
+    departure_date = serializers.ReadOnlyField(source='ride.departure_date')
+    arrival_date = serializers.ReadOnlyField(source='ride.arrival_date')
+
+    class Meta:
+        model = Ticket
+        fields = ('departure_station', 'arrival_station',
+                  'departure_date', 'arrival_date')
+
+
+class TicketBuySerializer(serializers.Serializer):
+    departure_station = serializers.CharField()
+    arrival_station = serializers.CharField()
+    departure_date = serializers.DateField()
+    departure_time = serializers.TimeField()
+
+    def create(self, validated_data):
+        departure_station = Station.objects.get(title=validated_data['departure_station'])
+        arrival_station = Station.objects.get(title=validated_data['arrival_station'])
+
+        ride = Ride.objects.get(route__departure_station=departure_station,
+                                route__arrival_station=arrival_station,
+                                departure_date=validated_data['departure_date'],
+                                departure_time=validated_data['departure_time'])
+
+        customer = self.context['user']
+
+        return Ticket.objects.create(customer=customer, ride=ride)
+
+
 class RideSerializer(serializers.ModelSerializer):
     tickets = TicketSerializer(many=True, read_only=True)
+    departure_station = serializers.ReadOnlyField(source='route.departure_station.title')
+    arrival_station = serializers.ReadOnlyField(source='route.arrival_station.title')
 
     class Meta:
         model = Ride
-        fields = ('id', 'route', 'amount', 'departure_date', 'arrival_date', 'tickets')
+        fields = ('id', 'route', 'amount',
+                  'departure_station', 'arrival_station',
+                  'departure_date', 'arrival_date',
+                  'departure_time', 'arrival_time',
+                  'tickets')
         read_only_fields = ('amount', )
 
     def validate(self, attrs):
@@ -181,3 +219,14 @@ class RideSerializer(serializers.ModelSerializer):
 
         return super().update(instance, validated_data)
 
+
+class SpecificRideSerializer(serializers.ModelSerializer):
+    departure_station = serializers.ReadOnlyField(source='route.departure_station.title')
+    arrival_station = serializers.ReadOnlyField(source='route.arrival_station.title')
+
+    class Meta:
+        model = Ride
+        fields = ('amount',
+                  'departure_station', 'arrival_station',
+                  'departure_date',    'arrival_date',
+                  'departure_time',    'arrival_time')
