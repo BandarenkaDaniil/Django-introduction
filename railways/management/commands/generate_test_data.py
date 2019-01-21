@@ -2,7 +2,7 @@ import pytz
 import itertools
 import yaml
 
-from datetime import datetime
+from datetime import date, time
 
 from django.contrib.auth.hashers import make_password
 from django.core.management.base import BaseCommand
@@ -119,8 +119,10 @@ class Command(BaseCommand):
                 total_ride_length += item.track.length
 
             new_ride = Ride.objects.create(
-                departure_date=datetime(*ride['departure_date'], tzinfo=pytz.UTC),
-                arrival_date=datetime(*ride['arrival_date'], tzinfo=pytz.UTC),
+                departure_date=date(*ride['departure_date']),
+                departure_time=time(*ride['departure_time']),
+                arrival_date=date(*ride['arrival_date']),
+                arrival_time=time(*ride['arrival_time']),
                 amount=amount,
                 route=route)
 
@@ -158,7 +160,7 @@ class Command(BaseCommand):
     @staticmethod
     def generate_data():
         Command.generate_stations()
-        # Command.generate_users()
+        Command.generate_users()
         Command.generate_tracks()
         Command.generate_routes()
 
@@ -169,7 +171,7 @@ class Command(BaseCommand):
 
         # deleting all stations is enough to drop all data for now
         Station.objects.all().delete()
-        # User.objects.all().delete()
+        User.objects.all().delete()
 
         self.generate_data()
 
