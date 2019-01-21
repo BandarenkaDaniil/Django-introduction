@@ -80,8 +80,12 @@ class Train(TimestampableModelMixin, models.Model):
 class Ride(TimestampableModelMixin, models.Model):
     route = models.ForeignKey(Route, on_delete=models.CASCADE, related_name='rides')
     amount = models.PositiveIntegerField()
-    departure_date = models.DateTimeField()
-    arrival_date = models.DateTimeField()
+
+    departure_date = models.DateField()
+    departure_time = models.TimeField()
+
+    arrival_date = models.DateField()
+    arrival_time = models.TimeField()
 
     def __str__(self):
         return 'Ride. {route}. Departure: {departure} - Arrival {arrival}'.format(
