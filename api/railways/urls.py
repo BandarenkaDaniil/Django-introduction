@@ -10,6 +10,7 @@ urlpatterns = [
 
     path('rides/', views.RideListAPI.as_view()),
     path('rides/<int:pk>/', views.RideDetailAPI.as_view()),
+    path('ride/', views.SpecificRidesAPI.as_view()),
 
     path('routes/', views.RouteListAPI.as_view()),
     path('routes/<int:pk>/', views.RouteDetailAPI.as_view()),
@@ -19,6 +20,8 @@ urlpatterns = [
 
     path('tickets/', views.TicketListAPI.as_view()),
     path('tickets/<int:pk>/', views.TicketDetailAPI.as_view()),
+    path('buy_ticket/', views.BuyTicket.as_view()),
+    path('user_tickets/', views.UserTicket.as_view()),
 
     path('trains/', views.TrainListAPI.as_view()),
     path('trains/<int:pk>/', views.TrainDetailAPI.as_view()),
