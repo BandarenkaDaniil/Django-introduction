@@ -3,11 +3,7 @@ import itertools
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from railways.models import Route
-from railways.models import RouteItem
-from railways.models import Station
-from railways.models import Track
-# from railways.models import Train
+from railways.models import Route, RouteItem, Station, Track
 
 
 # class TrainSerializer(serializers.ModelSerializer):
@@ -61,7 +57,9 @@ class RouteSerializer(serializers.ModelSerializer):
                 # check every pair to make sure that arrival station
                 # of one track is equal to another's departure
                 if pair[0].arrival_station != pair[1].departure_station:
-                    raise ValidationError
+                    raise ValidationError(
+                        'Given tracks don\'t form correct sequence'
+                    )
 
         return attrs
 

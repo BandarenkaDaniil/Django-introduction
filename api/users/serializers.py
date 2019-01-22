@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Create password out of raw data got from api request"""
-        validated_data['password'] = make_password(validated_data.get('password'))
+        validated_data['password'] = make_password(validated_data['password'])
         return super().create(validated_data)
 
 

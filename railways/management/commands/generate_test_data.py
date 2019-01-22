@@ -22,6 +22,8 @@ class Command(BaseCommand):
             for row in reader:
                 Station.objects.create(title=row[0], country=row[1])
 
+        print('Stations generated.')
+
     @staticmethod
     def generate_tracks():
         filename = 'test_data/tracks.csv'
@@ -41,6 +43,8 @@ class Command(BaseCommand):
                     length=row[2]
                 )
 
+        print('Tracks generated.')
+
     @staticmethod
     def generate_routes():
         filename = 'test_data/routes.csv'
@@ -59,7 +63,7 @@ class Command(BaseCommand):
                 )
 
                 # form two independent iterators to get
-                # tracks pairs like (1,2), (2,3), (3, 4) and so on
+                # station pairs like (1,2), (2,3), (3, 4) and so on
                 iter1, iter2 = itertools.tee(row)
                 next(iter2)
 
@@ -73,20 +77,32 @@ class Command(BaseCommand):
                     item = RouteItem.objects.create(
                         route=route,
                         track=Track.objects.get(
-                            departure_station=Station.objects.get(title=pair[0]),
-                            arrival_station=Station.objects.get(title=pair[1])
+                            departure_station=Station.objects.get(
+                                title=pair[0]
+                            ),
+                            arrival_station=Station.objects.get(
+                                title=pair[1]
+                            )
                         ),
                         previous_item=previous_item
                     )
                     previous_item = item
 
+        print('Routes generated.')
+
     def handle(self, *args, **options):
+        print('Start generating...')
+
         # deleting all stations is enough to drop all data for now
         Station.objects.all().delete()
 
         self.generate_stations()
         self.generate_tracks()
         self.generate_routes()
+
+        print('Done.')
+
+
 
 
 
