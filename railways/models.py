@@ -14,7 +14,8 @@ from railways.mixins.timestampable import TimestampableModelMixin
 #     type = models.CharField(max_length=10, choices=TRAIN_TYPES)
 #
 #     def __str__(self):
-#         return 'Train: ID: {id} Type: {type}'.format(id=self.id, type=self.type)
+#         return 'Train: ID: {id} Type: {type}'.format(id=self.id,
+#                                                      type=self.type)
 
 
 class Station(TimestampableModelMixin, models.Model):
@@ -55,10 +56,22 @@ class Route(TimestampableModelMixin, models.Model):
 
 
 class RouteItem(TimestampableModelMixin, models.Model):
-    route = models.ForeignKey(Route, on_delete=models.CASCADE, related_name='items')
-    track = models.ForeignKey(Track, on_delete=models.CASCADE, related_name='items')
-    previous_item = models.ForeignKey('RouteItem', on_delete=models.CASCADE,
-                                      null=True, blank=True)
+    route = models.ForeignKey(
+        Route,
+        on_delete=models.CASCADE,
+        related_name='items'
+    )
+    track = models.ForeignKey(
+        Track,
+        on_delete=models.CASCADE,
+        related_name='items'
+    )
+    previous_item = models.ForeignKey(
+        'RouteItem',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return 'Route item. {route}. Track: {track}'.format(
