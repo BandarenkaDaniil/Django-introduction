@@ -159,28 +159,22 @@ class UserTicketsSerializer(serializers.ModelSerializer):
     arrival_station = serializers.ReadOnlyField(source='ride.route.arrival_station.title')
     departure_date = serializers.ReadOnlyField(source='ride.departure_date')
     arrival_date = serializers.ReadOnlyField(source='ride.arrival_date')
+    departure_time = serializers.ReadOnlyField(source='ride.departure_time')
+    arrival_time = serializers.ReadOnlyField(source='ride.arrival_time')
 
     class Meta:
         model = Ticket
         fields = ('departure_station', 'arrival_station',
-                  'departure_date', 'arrival_date')
+                  'departure_date', 'arrival_date',
+                  'departure_time', 'arrival_time')
 
 
 class TicketBuySerializer(serializers.Serializer):
-    departure_station = serializers.CharField()
-    arrival_station = serializers.CharField()
-    departure_date = serializers.DateField()
-    departure_time = serializers.TimeField()
+    ride_id = serializers.IntegerField()
 
     def create(self, validated_data):
-        departure_station = Station.objects.get(title=validated_data['departure_station'])
-        arrival_station = Station.objects.get(title=validated_data['arrival_station'])
-
-        ride = Ride.objects.get(route__departure_station=departure_station,
-                                route__arrival_station=arrival_station,
-                                departure_date=validated_data['departure_date'],
-                                departure_time=validated_data['departure_time'])
-
+        print(validated_data)
+        ride = Ride.objects.get(id=validated_data['ride_id'])
         customer = self.context['user']
 
         return Ticket.objects.create(customer=customer, ride=ride)
@@ -226,7 +220,7 @@ class SpecificRideSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ride
-        fields = ('amount',
+        fields = ('id', 'amount',
                   'departure_station', 'arrival_station',
                   'departure_date',    'arrival_date',
                   'departure_time',    'arrival_time')

@@ -34,7 +34,7 @@ class Login(APIView):
 
         if user is not None:
             login(request, user)
-            token, created = Token.objects.get_or_create(user=user)
+            token, _ = Token.objects.get_or_create(user=user)
 
             return JsonResponse(
                 {'login status': True, 'token': token.key}
@@ -46,7 +46,13 @@ class Login(APIView):
             )
 
 
+class Logout(APIView):
+    def post(self, request):
+        Token.objects.get(user=request.user).delete()
 
+        return JsonResponse(
+            {'logout status': True}
+        )
 
 
 

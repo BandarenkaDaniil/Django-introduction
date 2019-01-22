@@ -17,6 +17,10 @@
     <script src="{% static 'railways/scripts/submitLoginForm.js' %}">
     </script>
 
+    <script src="{% static 'railways/scripts/logout.js' %}">
+    </script>
+
+
     <div class="modal fade" id="myModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -59,6 +63,7 @@
     </div>
 
     <div class="container" style="margin-top: 50px">
+        <form id="data_specifying_form" style="display: none">
             <div class="form-group">
                 <label for="departure_station">Departure station:</label>
                 <input type="text" class="form-control" id="departure_station"
@@ -98,10 +103,18 @@
             let cart_button = $("#cart_btn");
 
             cart_button.show();
-            cart_button.on("click",
-                getUserTickets
+
+            $('#logout_btn').on(
+                'click',
+                logout
             )
         }
+
+        let cart_button = $("#cart_btn");
+
+        cart_button.on("click",
+            getUserTickets
+        );
     </script>
 
     <script>
@@ -114,7 +127,7 @@
 
         $("pre").on(
             'click',
-            '.list-group-item',
+            '.btn-buy-ticket',
             buyTicket
         );
 
