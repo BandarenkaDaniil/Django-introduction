@@ -1,11 +1,6 @@
 function buyTicket(event) {
-    let inputs = event['target'].innerHTML.split(' ');
-
     let data = {
-        departure_station: inputs[1],
-        arrival_station: inputs[2],
-        departure_date: inputs[3],
-        departure_time: inputs[5]
+        ride_id: event['target'].getAttribute('data-ride-id')
     };
 
     let auth_token = getCookie('Authorization');
