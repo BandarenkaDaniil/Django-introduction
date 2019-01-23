@@ -1,5 +1,5 @@
-function submitLoginForm(event) {
-    let loginForm = $("#login_form");
+function loginUser(event) {
+    let loginForm = $("#loginForm");
 
     event.preventDefault();
     $.post(
@@ -11,7 +11,7 @@ function submitLoginForm(event) {
             setCookie('Authorization', 'Token ' + auth_token, 2);
 
             loginForm.hide();
-            $("#data_specifying_form").show();
+            $("#dataSpecifyingForm").show();
         },
         'text'
     ).fail(

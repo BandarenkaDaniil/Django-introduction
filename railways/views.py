@@ -6,3 +6,7 @@ class HomePage(TemplateView):
     template_name = 'railways/index.html'
 
 
+class Register(TemplateView):
+    template_name = 'railways/register.html'
+
+
