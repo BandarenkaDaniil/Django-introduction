@@ -10,27 +10,64 @@ function getUserTickets(event) {
     $.get(
         '/api/railways/user_tickets/',
         function (data) {
-            let str = '<table class="table table-hover">';
-            str += '<thead><tr><th>From</th><th>To</th><th>Departure date</th><th>Arrival date</th><th>Departure time</th><th>Arrival time</th></tr></thead>';
-            str += '<tbody>';
+            let table = document.createElement('table');
+            table.setAttribute('class', 'table table-hover');
+
+            let tableHead = document.createElement('thead');
+            let columnHeaders = [
+                'From',
+                'To',
+                'Departure date',
+                'Arrival date',
+                'Departure time',
+                'Arrival time'
+            ];
+
+            for (let i = 0; i < columnHeaders.length; i++) {
+                let columnHeaderElem = document.createElement('th');
+                let headerText = document.createTextNode(columnHeaders[i]);
+
+                columnHeaderElem.appendChild(headerText);
+                tableHead.appendChild(columnHeaderElem);
+            }
+            table.appendChild(tableHead);
+
+            let tableBody = document.createElement('tbody');
 
             for (let i = 0; i < data.length; i++) {
-                str += '<tr>';
 
-                str += `<td>${data[i].departure_station}</td>
-                        <td>${data[i].arrival_station}</td>
-                        <td>${data[i].departure_date}</td>
-                        <td>${data[i].arrival_date}</td>
-                        <td>${data[i].departure_time}</td>
-                        <td>${data[i].arrival_time}</td>`;
+                let tableRow = document.createElement('tr');
 
-                str += '</tr>';
+                let rowValues = [
+                    data[i].departure_station,
+                    data[i].arrival_station,
+                    moment(data[i].departure_date).format("MMM Do YYYY"),
+                    moment(data[i].departure_date).format("MMM Do YYYY"),
+                    data[i].departure_time,
+                    data[i].arrival_time
+                ];
+
+                for (let k = 0; k < rowValues.length; k++) {
+                    let rowCell = document.createElement('td');
+
+                    let cellText = document.createTextNode(rowValues[k]);
+
+                    rowCell.appendChild(cellText);
+                    tableRow.appendChild(rowCell);
+                }
+
+                tableBody.appendChild(tableRow);
             }
 
-            str += '</tbody></table>';
+            table.appendChild(tableBody);
 
-            $('#modal-trains pre').html(str);
-        },        'json'
+            let trains = document.getElementById('trainsModalBody');
+            while (trains.firstChild) {
+                trains.removeChild(trains.firstChild)
+            }
+            trains.appendChild(table);
+        },
+        'json'
     ).fail(
         function () {
             let str = '<div class="list-group">';

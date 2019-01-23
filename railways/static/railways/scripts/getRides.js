@@ -11,27 +11,78 @@ function getRides() {
         '/api/railways/ride/',
         dataSpecifyingForm.serialize(),
         function (data) {
-            let str = '<table class="table table-hover">';
-            str += '<thead><tr><th>From</th><th>To</th><th>Departure date</th><th>Arrival date</th><th>Departure time</th><th>Arrival time</th><th>Price</th></tr></thead>';
-            str += '<tbody>';
+            let table = document.createElement('table');
+            table.setAttribute('class', 'table table-hover');
+
+            let tableHead = document.createElement('thead');
+            let columnHeaders = [
+                'From',
+                'To',
+                'Departure date',
+                'Arrival date',
+                'Departure time',
+                'Arrival time',
+                'Price',
+                'Buy'
+            ];
+
+            for (let i = 0; i < columnHeaders.length; i++) {
+                let columnHeaderElem = document.createElement('th');
+                let headerText = document.createTextNode(columnHeaders[i]);
+
+                columnHeaderElem.appendChild(headerText);
+                tableHead.appendChild(columnHeaderElem);
+            }
+            table.appendChild(tableHead);
+
+            let tableBody = document.createElement('tbody');
 
             for (let i = 0; i < data.length; i++) {
-                str += '<tr class="rides-table-row">';
 
-                str += `<td>${data[i].departure_station}</td>
-                        <td>${data[i].arrival_station}</td>
-                        <td>${data[i].departure_date}</td>
-                        <td>${data[i].arrival_date}</td>
-                        <td>${data[i].departure_time}</td>
-                        <td>${data[i].arrival_time}</td>
-                        <td>${data[i].amount}</td>
-                        <td><button type="button" class="btn btn-primary btn-sm btn-buy-ticket" data-ride-id="${data[i].id}">Buy</button></td>`;
+                let tableRow = document.createElement('tr');
 
-                str += '</tr>';
+                let rowValues = [
+                    data[i].departure_station,
+                    data[i].arrival_station,
+                    moment(data[i].departure_date).format("MMM Do YYYY"),
+                    moment(data[i].departure_date).format("MMM Do YYYY"),
+                    data[i].departure_time,
+                    data[i].arrival_time,
+                    data[i].amount
+                ];
+
+                for (let k = 0; k < rowValues.length; k++) {
+                    let rowCell = document.createElement('td');
+                    rowCell.setAttribute('class', 'align-middle');
+
+                    let cellText = document.createTextNode(rowValues[k]);
+
+                    rowCell.appendChild(cellText);
+                    tableRow.appendChild(rowCell);
+                }
+
+                let button = document.createElement('button');
+                button.setAttribute('type', 'button');
+                button.setAttribute('class', 'btn btn-primary btn-sm btn-buy-ticket');
+                button.setAttribute('data-ride-id', data[i].id);
+
+                let buttonText = document.createTextNode('Buy');
+
+                let buttonCell = document.createElement('td');
+                button.appendChild(buttonText);
+                buttonCell.appendChild(button);
+                tableRow.appendChild(buttonCell);
+
+                tableBody.appendChild(tableRow);
             }
-            str += '</tbody></table>';
 
-            $('#trains pre').html(str);
+            table.appendChild(tableBody);
+
+            let trains = document.getElementById('trains');
+            while (trains.firstChild) {
+                trains.removeChild(trains.firstChild)
+            }
+            trains.appendChild(table);
         },
         'json'
     ).fail(
