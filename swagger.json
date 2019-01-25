@@ -825,11 +825,9 @@
     "definitions": {
         "SpecificRide": {
             "required": [
-                "amount",
-                "departure_date",
-                "arrival_date",
-                "departure_time",
-                "arrival_time"
+                "departure_station",
+                "arrival_station",
+                "departure_date"
             ],
             "type": "object",
             "properties": {
@@ -841,18 +839,17 @@
                 "amount": {
                     "title": "Amount",
                     "type": "integer",
-                    "maximum": 2147483647,
-                    "minimum": 0
+                    "readOnly": true
                 },
                 "departure_station": {
                     "title": "Departure station",
                     "type": "string",
-                    "readOnly": true
+                    "minLength": 1
                 },
                 "arrival_station": {
                     "title": "Arrival station",
                     "type": "string",
-                    "readOnly": true
+                    "minLength": 1
                 },
                 "departure_date": {
                     "title": "Departure date",
@@ -862,15 +859,18 @@
                 "arrival_date": {
                     "title": "Arrival date",
                     "type": "string",
-                    "format": "date"
+                    "format": "date",
+                    "readOnly": true
                 },
                 "departure_time": {
                     "title": "Departure time",
-                    "type": "string"
+                    "type": "string",
+                    "readOnly": true
                 },
                 "arrival_time": {
                     "title": "Arrival time",
-                    "type": "string"
+                    "type": "string",
+                    "readOnly": true
                 }
             }
         },

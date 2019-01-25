@@ -114,13 +114,24 @@ class SpecificRidesAPI(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
-        departure_station = Station.objects.get(title=self.request.query_params['departure_station'])
-        arrival_station = Station.objects.get(title=self.request.query_params['arrival_station'])
-        departure_date = self.request.query_params['departure_date']
+        departure_station = Station.objects.get(
+            title=self.request.query_params.get('departure_station', None)
+        )
+        arrival_station = Station.objects.get(
+            title=self.request.query_params.get('arrival_station', None)
+        )
+        departure_date = self.request.query_params.get('departure_date', None)
 
         return Ride.objects.filter(departure_date=departure_date,
                                    route__departure_station=departure_station,
                                    route__arrival_station=arrival_station)
+
+    def list(self, request, *args, **kwargs):
+        serializer = SpecificRideSerializer(data=request.query_params)
+
+        serializer.is_valid(raise_exception=True)
+
+        return super().list(request, *args, **kwargs)
 
 
 class TicketListAPI(generics.ListCreateAPIView):
@@ -136,17 +147,33 @@ class UserTicket(generics.ListAPIView):
     def get_queryset(self):
         return Ticket.objects.filter(customer=self.request.user)
 
+    def list(self, request, *args, **kwargs):
+        if request.user.is_anonymous:
+            return JsonResponse(
+                {'Error': ['User not authorized', ]},
+                status=401
+            )
+
+        return super().list(request, *args, **kwargs)
+
 
 class BuyTicket(views.APIView):
     def post(self, request):
         serializer = TicketBuySerializer(data=request.data)
+
+        if request.user.is_anonymous:
+            return JsonResponse(
+                {'Purchase status': ['Failed. User not authorized', ]},
+                status=401
+            )
+
         serializer.context['user'] = request.user
         serializer.is_valid(raise_exception=True)
 
         serializer.save()
 
         return JsonResponse(
-            {'status': 'Ticket purchased'},
+            {'Purchase status': ['Success', ]},
             status=201
         )
 
