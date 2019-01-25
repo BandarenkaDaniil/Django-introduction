@@ -32,16 +32,18 @@ class Login(APIView):
 
         user = authenticate(email=email, password=password)
 
-        if user is not None:
+        if user:
             login(request, user)
             token, _ = Token.objects.get_or_create(user=user)
 
             return JsonResponse(
-                {'login status': True, 'token': token.key}
+                {'token': token.key},
+                status=200
             )
         else:
             return JsonResponse(
-                {'login status': False},
+                {'Error': 'There\'s no user with credentials provided or '
+                          'password is incorrect'},
                 status=400
             )
 
