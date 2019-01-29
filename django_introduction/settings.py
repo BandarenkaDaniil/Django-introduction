@@ -25,7 +25,7 @@ SECRET_KEY = 'o#%)ks&z^8-$!g9oa4vmni%xh7^o^0sv9a()%4ce1%l$j%afn9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -88,12 +88,12 @@ WSGI_APPLICATION = 'django_introduction.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django_intro_db',
-        'USER': 'danik',
-        'PASSWORD': 'postgrespassword',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'database',
+        'USER': 'database_role',
+        'PASSWORD': 'database_password',
+        'HOST': 'database',
+        'PORT': 5432,
     }
 }
 
@@ -151,9 +151,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-)
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, "railways/static"),
+# )
 
 BOOTSTRAP4 = {
     'include_jquery': True,
