@@ -14,15 +14,15 @@ for ride you want and check your tickets by "Cart" button clicking.
 ### Run
 
 ```ch
-$ git clone [https://github.com/BondarenkoDaniil/Django-introduction]
+$ git clone https://github.com/BondarenkoDaniil/Django-introduction
+$ cd Django-introduction
 $ git checkout feature/docker_gunicorn_nginx
 $ docker-compose build
-$ docker-compose run --rm djangoapp /bin/bash -c "./manage.py migrate"
-$ docker-compose run --rm djangoapp /bin/bash -c "./manage.py generate_test_data"
-$ docker-compose run --rm djangoapp /bin/bash -c "./manage.py collectstatic"
-$ docker-compose run --rm djangoapp /bin/bash -c "./manage.py createsuperuser"
+$ ./pre_run_setup
 $ docker-compose up
 ```
+
+! After first running you don't need to run ***./pre_run_setup***, only one time
 
 ### Stop
 
@@ -38,6 +38,11 @@ Press ***Ctrl+C*** to stop containers running
 5. Fill main form with **Brest - Minsk - 01.15.2019** data
 6. Buy a few **tickets** for yourself
 7. Check your tickets by **Cart** button clicking
+
+##### Also
+If you don't want to register, you can use one of pre created users to log in:
+- vladimir@example.com - vladimir777
+- ivan@example.com - ivan1234
 
 ### Todos
 
