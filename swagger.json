@@ -91,104 +91,6 @@
             },
             "parameters": []
         },
-        "/railways/rides/": {
-            "get": {
-                "operationId": "railways_rides_list",
-                "description": "",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Ride"
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "railways"
-                ]
-            },
-            "post": {
-                "operationId": "railways_rides_create",
-                "description": "",
-                "parameters": [
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Ride"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/Ride"
-                        }
-                    }
-                },
-                "tags": [
-                    "railways"
-                ]
-            },
-            "parameters": []
-        },
-        "/railways/rides{format}": {
-            "get": {
-                "operationId": "railways_read",
-                "description": "",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/Ride"
-                        }
-                    }
-                },
-                "tags": [
-                    "railways"
-                ]
-            },
-            "post": {
-                "operationId": "railways_create",
-                "description": "",
-                "parameters": [
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Ride"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/Ride"
-                        }
-                    }
-                },
-                "tags": [
-                    "railways"
-                ]
-            },
-            "parameters": [
-                {
-                    "name": "format",
-                    "in": "path",
-                    "required": true,
-                    "type": "string"
-                }
-            ]
-        },
         "/railways/ride{format}": {
             "get": {
                 "operationId": "railways_read",
@@ -199,104 +101,6 @@
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/SpecificRide"
-                        }
-                    }
-                },
-                "tags": [
-                    "railways"
-                ]
-            },
-            "parameters": [
-                {
-                    "name": "format",
-                    "in": "path",
-                    "required": true,
-                    "type": "string"
-                }
-            ]
-        },
-        "/railways/routes/": {
-            "get": {
-                "operationId": "railways_routes_list",
-                "description": "",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Route"
-                            }
-                        }
-                    }
-                },
-                "tags": [
-                    "railways"
-                ]
-            },
-            "post": {
-                "operationId": "railways_routes_create",
-                "description": "",
-                "parameters": [
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Route"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/Route"
-                        }
-                    }
-                },
-                "tags": [
-                    "railways"
-                ]
-            },
-            "parameters": []
-        },
-        "/railways/routes{format}": {
-            "get": {
-                "operationId": "railways_read",
-                "description": "",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/Route"
-                        }
-                    }
-                },
-                "tags": [
-                    "railways"
-                ]
-            },
-            "post": {
-                "operationId": "railways_create",
-                "description": "",
-                "parameters": [
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Route"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/Route"
                         }
                     }
                 },
@@ -634,195 +438,28 @@
                     "type": "string"
                 }
             ]
-        },
-        "/users/{id}/": {
-            "get": {
-                "operationId": "users_read",
-                "description": "",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                },
-                "tags": [
-                    "users"
-                ]
-            },
-            "put": {
-                "operationId": "users_update",
-                "description": "",
-                "parameters": [
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                },
-                "tags": [
-                    "users"
-                ]
-            },
-            "patch": {
-                "operationId": "users_partial_update",
-                "description": "",
-                "parameters": [
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                },
-                "tags": [
-                    "users"
-                ]
-            },
-            "delete": {
-                "operationId": "users_delete",
-                "description": "",
-                "parameters": [],
-                "responses": {
-                    "204": {
-                        "description": ""
-                    }
-                },
-                "tags": [
-                    "users"
-                ]
-            },
-            "parameters": [
-                {
-                    "name": "id",
-                    "in": "path",
-                    "description": "A unique integer value identifying this user.",
-                    "required": true,
-                    "type": "integer"
-                }
-            ]
-        },
-        "/users/{id}{format}": {
-            "get": {
-                "operationId": "users_read",
-                "description": "",
-                "parameters": [],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                },
-                "tags": [
-                    "users"
-                ]
-            },
-            "put": {
-                "operationId": "users_update",
-                "description": "",
-                "parameters": [
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                },
-                "tags": [
-                    "users"
-                ]
-            },
-            "patch": {
-                "operationId": "users_partial_update",
-                "description": "",
-                "parameters": [
-                    {
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                },
-                "tags": [
-                    "users"
-                ]
-            },
-            "delete": {
-                "operationId": "users_delete",
-                "description": "",
-                "parameters": [],
-                "responses": {
-                    "204": {
-                        "description": ""
-                    }
-                },
-                "tags": [
-                    "users"
-                ]
-            },
-            "parameters": [
-                {
-                    "name": "format",
-                    "in": "path",
-                    "required": true,
-                    "type": "string"
-                },
-                {
-                    "name": "id",
-                    "in": "path",
-                    "description": "A unique integer value identifying this user.",
-                    "required": true,
-                    "type": "integer"
-                }
-            ]
         }
     },
     "definitions": {
+        "RouteItem": {
+            "required": [
+                "departure_station",
+                "arrival_station"
+            ],
+            "type": "object",
+            "properties": {
+                "departure_station": {
+                    "title": "Departure station",
+                    "type": "string",
+                    "minLength": 1
+                },
+                "arrival_station": {
+                    "title": "Arrival station",
+                    "type": "string",
+                    "minLength": 1
+                }
+            }
+        },
         "SpecificRide": {
             "required": [
                 "departure_station",
@@ -871,6 +508,12 @@
                     "title": "Arrival time",
                     "type": "string",
                     "readOnly": true
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RouteItem"
+                    }
                 }
             }
         },
@@ -896,152 +539,21 @@
                 }
             }
         },
-        "Ride": {
-            "required": [
-                "route",
-                "departure_date",
-                "arrival_date",
-                "departure_time",
-                "arrival_time"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "title": "ID",
-                    "type": "integer",
-                    "readOnly": true
-                },
-                "route": {
-                    "title": "Route",
-                    "type": "integer"
-                },
-                "amount": {
-                    "title": "Amount",
-                    "type": "integer",
-                    "readOnly": true
-                },
-                "departure_station": {
-                    "title": "Departure station",
-                    "type": "string",
-                    "readOnly": true
-                },
-                "arrival_station": {
-                    "title": "Arrival station",
-                    "type": "string",
-                    "readOnly": true
-                },
-                "departure_date": {
-                    "title": "Departure date",
-                    "type": "string",
-                    "format": "date"
-                },
-                "arrival_date": {
-                    "title": "Arrival date",
-                    "type": "string",
-                    "format": "date"
-                },
-                "departure_time": {
-                    "title": "Departure time",
-                    "type": "string"
-                },
-                "arrival_time": {
-                    "title": "Arrival time",
-                    "type": "string"
-                },
-                "tickets": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Ticket"
-                    },
-                    "readOnly": true
-                }
-            }
-        },
-        "Train": {
-            "required": [
-                "route"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "title": "ID",
-                    "type": "integer",
-                    "readOnly": true
-                },
-                "route": {
-                    "title": "Route",
-                    "type": "integer"
-                }
-            }
-        },
-        "RouteItem": {
-            "required": [
-                "track"
-            ],
-            "type": "object",
-            "properties": {
-                "track": {
-                    "title": "Track",
-                    "type": "integer"
-                }
-            }
-        },
-        "Route": {
-            "required": [
-                "trains",
-                "items"
-            ],
-            "type": "object",
-            "properties": {
-                "id": {
-                    "title": "ID",
-                    "type": "integer",
-                    "readOnly": true
-                },
-                "trains": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/Train"
-                    }
-                },
-                "items": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/RouteItem"
-                    }
-                }
-            }
-        },
         "UserTickets": {
             "type": "object",
             "properties": {
-                "departure_station": {
-                    "title": "Departure station",
+                "train": {
+                    "title": "Train",
                     "type": "string",
                     "readOnly": true
                 },
-                "arrival_station": {
-                    "title": "Arrival station",
+                "departure": {
+                    "title": "Departure",
                     "type": "string",
                     "readOnly": true
                 },
-                "departure_date": {
-                    "title": "Departure date",
-                    "type": "string",
-                    "readOnly": true
-                },
-                "arrival_date": {
-                    "title": "Arrival date",
-                    "type": "string",
-                    "readOnly": true
-                },
-                "departure_time": {
-                    "title": "Departure time",
-                    "type": "string",
-                    "readOnly": true
-                },
-                "arrival_time": {
-                    "title": "Arrival time",
+                "arrival": {
+                    "title": "Arrival",
                     "type": "string",
                     "readOnly": true
                 }
