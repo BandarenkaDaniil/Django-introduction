@@ -4,78 +4,25 @@ from rest_framework import generics, permissions
 from rest_framework import views
 
 from api.railways.serializers import (
-    RideSerializer,
     SpecificRideSerializer,
     UserTicketsSerializer,
     RouteSerializer,
     RouteItemSerializer,
-    StationSerializer,
     TicketSerializer,
     TicketBuySerializer,
-    TrainSerializer,
-    TrackSerializer,
 )
 
-from railways.models import Ride
-from railways.models import Route
-from railways.models import RouteItem
-from railways.models import Station
-from railways.models import Ticket
-from railways.models import Train
-from railways.models import Track
-
-
-class TrainListAPI(generics.ListCreateAPIView):
-    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-    queryset = Train.objects.all()
-    serializer_class = TrainSerializer
-
-
-class TrainDetailAPI(generics.RetrieveUpdateDestroyAPIView):
-    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-    queryset = Train.objects.all()
-    serializer_class = TrainSerializer
-
-
-class StationListAPI(generics.ListCreateAPIView):
-    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-    queryset = Station.objects.all()
-    serializer_class = StationSerializer
-
-
-class StationDetailAPI(generics.RetrieveUpdateDestroyAPIView):
-    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-    queryset = Station.objects.all()
-    serializer_class = StationSerializer
-
-
-class TrackListAPI(generics.ListCreateAPIView):
-    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-    queryset = Track.objects.all()
-    serializer_class = TrackSerializer
-
-
-class TrackDetailAPI(generics.RetrieveUpdateDestroyAPIView):
-    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-    queryset = Track.objects.all()
-    serializer_class = TrackSerializer
+from railways.models import (
+    Ride,
+    Route,
+    RouteItem,
+    Station,
+    Ticket,
+)
 
 
 class RouteListAPI(generics.ListCreateAPIView):
-    # permission_classes = (permissions.IsAuthenticated,)
-
-    queryset = Route.objects.all()
-    serializer_class = RouteSerializer
-
-
-class RouteDetailAPI(generics.RetrieveUpdateDestroyAPIView):
-    # permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticated,)
 
     queryset = Route.objects.all()
     serializer_class = RouteSerializer
@@ -86,27 +33,6 @@ class RouteItemListAPI(generics.ListCreateAPIView):
 
     queryset = RouteItem.objects.all()
     serializer_class = RouteItemSerializer
-
-
-class RouteItemDetailAPI(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAdminUser,)
-
-    queryset = RouteItem.objects.all()
-    serializer_class = RouteItemSerializer
-
-
-class RideListAPI(generics.ListCreateAPIView):
-    # permission_classes = (permissions.IsAdminUser,)
-
-    queryset = Ride.objects.all()
-    serializer_class = RideSerializer
-
-
-class RideDetailAPI(generics.RetrieveUpdateDestroyAPIView):
-    # permission_classes = (permissions.IsAdminUser,)
-
-    queryset = Ride.objects.all()
-    serializer_class = RideSerializer
 
 
 class SpecificRidesAPI(generics.ListAPIView):
@@ -135,39 +61,28 @@ class SpecificRidesAPI(generics.ListAPIView):
 
 
 class TicketListAPI(generics.ListCreateAPIView):
-    # permission_classes = (permissions.IsAdminUser,)
-
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
 
 
 class UserTicket(generics.ListAPIView):
     serializer_class = UserTicketsSerializer
+    permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
         return Ticket.objects.filter(customer=self.request.user)
 
-    def list(self, request, *args, **kwargs):
-        if request.user.is_anonymous:
-            return JsonResponse(
-                {'Error': ['User not authorized', ]},
-                status=401
-            )
-
-        return super().list(request, *args, **kwargs)
-
 
 class BuyTicket(views.APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
     def post(self, request):
-        serializer = TicketBuySerializer(data=request.data)
+        data = request.data.dict()
 
-        if request.user.is_anonymous:
-            return JsonResponse(
-                {'Purchase status': ['Failed. User not authorized', ]},
-                status=401
-            )
+        data['user_email'] = request.user.email
 
-        serializer.context['user'] = request.user
+        serializer = TicketBuySerializer(data=data)
+
         serializer.is_valid(raise_exception=True)
 
         serializer.save()
@@ -179,7 +94,6 @@ class BuyTicket(views.APIView):
 
 
 class TicketDetailAPI(generics.RetrieveUpdateDestroyAPIView):
-    # permission_classes = (permissions.IsAdminUser,)
 
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer

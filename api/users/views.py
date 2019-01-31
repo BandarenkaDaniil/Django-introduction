@@ -2,7 +2,6 @@ from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 
 from rest_framework import generics
-from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.views import Token
 
@@ -12,11 +11,6 @@ from users.models import User
 
 
 class UserListAPI(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetailAPI(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -52,18 +46,6 @@ class Logout(APIView):
     def post(self, request):
         Token.objects.get(user=request.user).delete()
 
-        return JsonResponse(
-            {'logout status': True}
-        )
-
-
-
-
-
-
-
-
-
-
-
-
+        return JsonResponse({
+            'logout status': True
+        })
