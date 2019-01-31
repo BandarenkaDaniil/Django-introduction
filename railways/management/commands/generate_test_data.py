@@ -1,4 +1,3 @@
-import pytz
 import itertools
 import yaml
 
@@ -9,13 +8,15 @@ from django.core.management.base import BaseCommand
 
 from railways.utils import calculate_amount
 
-from railways.models import Ride
-from railways.models import Route
-from railways.models import RouteItem
-from railways.models import Station
-from railways.models import Ticket
-from railways.models import Train
-from railways.models import Track
+from railways.models import (
+    Ride,
+    Route,
+    RouteItem,
+    Station,
+    Ticket,
+    Train,
+    Track
+)
 
 from users.models import User
 
@@ -31,8 +32,10 @@ class Command(BaseCommand):
             try:
                 test_data = yaml.load(file)
                 for station in test_data['stations']:
-                    Station.objects.create(title=station['title'],
-                                           country=station['country'])
+                    Station.objects.create(
+                        title=station['title'],
+                        country=station['country']
+                    )
             except yaml.YAMLError as exc:
                 print(exc)
 
@@ -44,10 +47,12 @@ class Command(BaseCommand):
             try:
                 test_data = yaml.load(file)
                 for user in test_data['users']:
-                    User.objects.create(email=user['email'],
-                                        first_name=user['first_name'],
-                                        last_name=user['last_name'],
-                                        password=make_password(user['password']))
+                    User.objects.create(
+                        email=user['email'],
+                        first_name=user['first_name'],
+                        last_name=user['last_name'],
+                        password=make_password(user['password'])
+                    )
             except yaml.YAMLError as exc:
                 print(exc)
 
@@ -61,15 +66,24 @@ class Command(BaseCommand):
             try:
                 test_data = yaml.load(file)
                 for track in test_data['tracks']:
-                    # create two-directional logical track via two database tracks
+                    # create two-directional logical
+                    # track via two database tracks
                     Track.objects.create(
-                        departure_station=Station.objects.get(title=track['departure_station']),
-                        arrival_station=Station.objects.get(title=track['arrival_station']),
+                        departure_station=Station.objects.get(
+                            title=track['departure_station']
+                        ),
+                        arrival_station=Station.objects.get(
+                            title=track['arrival_station']
+                        ),
                         length=track['length']
                     )
                     Track.objects.create(
-                        departure_station=Station.objects.get(title=track['arrival_station']),
-                        arrival_station=Station.objects.get(title=track['departure_station']),
+                        departure_station=Station.objects.get(
+                            title=track['arrival_station']
+                        ),
+                        arrival_station=Station.objects.get(
+                            title=track['departure_station']
+                        ),
                         length=track['length']
                     )
             except yaml.YAMLError as exc:
@@ -106,8 +120,9 @@ class Command(BaseCommand):
     @staticmethod
     def generate_tickets(ride, tickets):
         for ticket in tickets:
-            Ticket.objects.create(customer=User.objects.get(email=ticket['customer']),
-                                  ride=ride)
+            Ticket.objects.create(
+                customer=User.objects.get(email=ticket['customer']),
+                ride=ride)
 
     @staticmethod
     def generate_rides(route, rides):
@@ -124,7 +139,8 @@ class Command(BaseCommand):
                 arrival_date=date(*ride['arrival_date']),
                 arrival_time=time(*ride['arrival_time']),
                 amount=amount,
-                route=route)
+                route=route
+            )
 
             Command.generate_tickets(ride=new_ride, tickets=ride['tickets'])
 
@@ -144,15 +160,25 @@ class Command(BaseCommand):
                     # arrival of the last.
                     # Even if sequence consists of one track.
                     new_route = Route.objects.create(
-                        departure_station=Station.objects.get(title=route['stations'][0]),
-                        arrival_station=Station.objects.get(title=route['stations'][-1])
+                        departure_station=Station.objects.get(
+                            title=route['stations'][0]
+                        ),
+                        arrival_station=Station.objects.get(
+                            title=route['stations'][-1]
+                        )
                     )
 
                     Command.generate_train(route=new_route)
 
-                    Command.generate_route_items(route=new_route, stations=route['stations'])
+                    Command.generate_route_items(
+                        route=new_route,
+                        stations=route['stations']
+                    )
 
-                    Command.generate_rides(route=new_route, rides=route['rides'])
+                    Command.generate_rides(
+                        route=new_route,
+                        rides=route['rides']
+                    )
 
             except yaml.YAMLError as exc:
                 print(exc)
@@ -176,7 +202,3 @@ class Command(BaseCommand):
         self.generate_data()
 
         print('Done.')
-
-
-
-
