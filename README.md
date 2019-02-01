@@ -16,9 +16,9 @@ for ride you want and check your tickets by "Cart" button clicking.
 ```ch
 $ git clone https://github.com/BondarenkoDaniil/Django-introduction
 $ cd Django-introduction
-$ git checkout feature/docker_gunicorn_nginx
+$ git checkout feature/api_n_frontend_internship_scope
 $ docker-compose build
-$ ./pre_run_setup
+$ ./pre_run_setup.sh
 $ docker-compose up
 ```
 
