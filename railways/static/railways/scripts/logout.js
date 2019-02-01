@@ -8,12 +8,16 @@ function logout(event) {
     });
 
     $.post(
-        '/api/users/logout/',
+        LOGOUT_URL,
         function (data) {
             setCookie('Authorization', '', -1);
+            location.reload();
         },
         'text'
     ).fail(
-        () => alert('Cannot log out')
+        () => {
+            setCookie('Authorization', '', -1);
+            location.reload();
+        }
     );
 }

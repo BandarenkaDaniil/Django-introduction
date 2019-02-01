@@ -2,8 +2,6 @@
 {% load static %}
 
 {% block header %}
-    <link rel="stylesheet" type="text/css"
-          href='{% static "/railways/styles/input_group.css" %}'>
 
 {% endblock header %}
 
@@ -14,15 +12,16 @@
     <script src="{% static 'railways/scripts/utils.js' %}">
     </script>
 
-    <div class="card shadow-lg mx-auto w-50 mt-5">
-        <h4 class="card-header">Register</h4>
+    <div class="card shadow-lg mx-auto w-25 mt-5 " id="registerDiv">
+        <h3 class="card-header">Register</h3>
         <div class="card-body">
             <div class="messages"></div>
 
             <form id="registerForm">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">Email</span>
+                        <span class="input-group-text"><i
+                                class="material-icons">mail_outline</i></span>
                     </div>
                     <input type="email" class="form-control"
                            placeholder="Email" id="email"
@@ -31,7 +30,9 @@
 
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                        <span class="input-group-text w-100">Person</span>
+                        <span class="input-group-text ">
+                            <i class="material-icons ">person_outline</i>
+                        </span>
                     </div>
                     <input type="text" class="form-control"
                            placeholder="First Name" id="firstName"
@@ -44,19 +45,24 @@
 
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">Password</span>
+                        <span class="input-group-text">
+                            <i class="material-icons">lock_outline</i>
+                        </span>
                     </div>
                     <input type="password" class="form-control"
-                           placeholder="Enter password" id="password2"
+                           placeholder="Password" id="password2"
                            name="password2">
-                    <input type="password" class="form-control"
-                           placeholder="Repeat password" id="password"
+                    <input type="password" class="form-control invalid"
+                           placeholder="Password again" id="password"
                            name="password">
+                    <div class="invalid-feedback">
+                        Please choose a username.
+                    </div>
                 </div>
-
-                <button type="submit" class="btn btn-primary"
+                <button type="submit"
+                        class="btn btn-outline-success float-right"
                         id="submitButton">
-                    Register
+                    Submit
                 </button>
             </form>
         </div>

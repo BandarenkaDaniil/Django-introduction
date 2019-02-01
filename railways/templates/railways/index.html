@@ -1,28 +1,6 @@
 {% extends 'railways/base.html' %}
 {% load static %}
 {% block content %}
-
-    <script src="{% static 'railways/scripts/moment.js' %}">
-    </script>
-
-    <script src="{% static 'railways/scripts/utils.js' %}">
-    </script>
-
-    <script src="{% static 'railways/scripts/getRides.js' %}">
-    </script>
-
-    <script src="{% static 'railways/scripts/buyTicket.js' %}">
-    </script>
-
-    <script src="{% static 'railways/scripts/logout.js' %}">
-    </script>
-
-    <script src="{% static 'railways/scripts/getUserTickets.js' %}">
-    </script>
-
-    <script src="{% static 'railways/scripts/loginUser.js' %}">
-    </script>
-
     <div class="modal fade" id="cartModal">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -42,27 +20,27 @@
                             data-dismiss="modal">Close
                     </button>
                 </div>
-
             </div>
         </div>
     </div>
 
     <div class="modal fade" id="loginModal">
-        <div class="modal-dialog modal-login">
+        <div class="modal-dialog modal-sm">
             <div class="modal-content">
-
                 <div class="modal-header">
-                    <h4 class="modal-title">Log in</h4>
+                    <h3 class="modal-title">Login</h3>
                     <button type="button" class="close" data-dismiss="modal">
                         &times;
                     </button>
                 </div>
 
                 <div class="modal-body" id="loginModalBody">
-                    <form id="loginForm" style="display: none">
+                    <form id="loginForm">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">Your Email:</span>
+                                <span class="input-group-text">
+                            <i class="material-icons">mail_outline</i>
+                        </span>
                             </div>
                             <input type="email" class="form-control"
                                    placeholder="Email" id="email"
@@ -71,14 +49,18 @@
 
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">Password:</span>
+                                <span class="input-group-text">
+                                    <i class="material-icons">lock_outline</i>
+                                </span>
                             </div>
                             <input type="password" class="form-control"
                                    placeholder="Password" id="password"
                                    name="password">
                         </div>
 
-                        <button type="submit" class="btn  btn-primary">Log in
+                        <button type="submit"
+                                class="btn btn-outline-success float-right">
+                            Submit
                         </button>
                     </form>
                 </div>
@@ -86,77 +68,49 @@
         </div>
     </div>
 
-    <div class="container" style="margin-top: 50px">
-        <form id="dataSpecifyingForm" style="display: none">
-            <div class="form-group">
-                <label for="departure_station">Departure station:</label>
-                <input type="text" class="form-control" id="departureStation"
-                       name="departure_station">
-            </div>
-            <div class="form-group">
-                <label for="arrival_station">Arrival station:</label>
-                <input type="text" class="form-control" id="arrivalStation"
-                       name="arrival_station">
-            </div>
+    <div class="card shadow-lg mx-auto w-50 mt-5" id="dataSpecifyingDiv"
+         style="display: none">
+        <h4 class="card-header">Choose ride</h4>
+        <div class="card-body">
+            <form id="dataSpecifyingForm">
+                <div class="form-group">
+                    <label for="departure_station">Departure station:</label>
+                    <input type="text" class="form-control"
+                           id="departureStation"
+                           name="departure_station">
+                </div>
+                <div class="form-group">
+                    <label for="arrival_station">Arrival station:</label>
+                    <input type="text" class="form-control" id="arrivalStation"
+                           name="arrival_station">
+                </div>
 
-            <div class="form-group">
-                <label for="departure_date">Departure date:</label>
-                <input type="date" class="form-control" id="departureDate"
-                       name="departure_date">
-            </div>
+                <div class="form-group">
+                    <label for="departure_date">Departure date:</label>
+                    <input type="date" class="form-control" id="departureDate"
+                           name="departure_date">
+                </div>
 
-            <button type="submit" class="btn btn-primary">Choose</button>
-        </form>
+                <button type="submit"
+                        class="btn btn-outline-success float-right">Choose
+                </button>
+            </form>
+        </div>
     </div>
 
-    <div class="container" id="trains" style="margin-top: 50px">
+    <div class="card shadow-lg mx-auto w-50 mt-5" id="ridesDiv"
+         style="display: none; margin-bottom: 100px">
+        <h4 class="card-header">
+            Choose train
+        </h4>
+        <div class="card-body table-responsive" id="rides">
+            <pre></pre>
+        </div>
     </div>
 
     <script>
-        let cartButton = $("#cartNavButton");
-
-        if (getCookie('Authorization') === '') {
-            let loginForm = $("#loginForm");
-
-            loginForm.show();
-
-            loginForm.on(
-                "submit",
-                loginUser
-            );
-        } else {
-            $("#dataSpecifyingForm").show();
-
-            cartButton.show();
-
-            $('#logoutNavButton').on(
-                'click',
-                logout
-            )
-        }
-
-        cartButton.on("click",
-            getUserTickets
-        );
-    </script>
-
-    <script>
-        let dataSpecifyingForm = $("#dataSpecifyingForm");
-
-        function submitDataSpecifyingForm(event) {
-            event.preventDefault();
-            getRides();
-        }
-
-        $("#trains").on(
-            'click',
-            '.btn-buy-ticket',
-            buyTicket
-        );
-
-        dataSpecifyingForm.on(
-            "submit",
-            submitDataSpecifyingForm
+        $(document).ready(
+            setupPage
         );
     </script>
 {% endblock content %}

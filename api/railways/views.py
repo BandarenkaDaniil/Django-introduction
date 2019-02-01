@@ -48,9 +48,11 @@ class SpecificRidesAPI(generics.ListAPIView):
         )
         departure_date = self.request.query_params.get('departure_date', None)
 
-        return Ride.objects.filter(departure_date=departure_date,
-                                   route__departure_station=departure_station,
-                                   route__arrival_station=arrival_station)
+        return Ride.objects.filter(
+            departure_date=departure_date,
+            route__departure_station=departure_station,
+            route__arrival_station=arrival_station
+        )
 
     def list(self, request, *args, **kwargs):
         serializer = SpecificRideSerializer(data=request.query_params)
@@ -88,7 +90,9 @@ class BuyTicket(views.APIView):
         serializer.save()
 
         return JsonResponse(
-            {'Purchase status': ['Success', ]},
+            {
+                'Purchase status': ['Success', ]
+            },
             status=201
         )
 

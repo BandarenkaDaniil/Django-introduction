@@ -8,19 +8,16 @@ function getUserTickets(event) {
     });
 
     $.get(
-        '/api/railways/user_tickets/',
+        USER_TICKETS_URL,
         function (data) {
             let table = document.createElement('table');
             table.setAttribute('class', 'table table-hover');
 
             let tableHead = document.createElement('thead');
             let columnHeaders = [
-                'From',
-                'To',
-                'Departure date',
-                'Arrival date',
-                'Departure time',
-                'Arrival time'
+                'Train',
+                'Departure',
+                'Arrival',
             ];
 
             for (let i = 0; i < columnHeaders.length; i++) {
@@ -39,12 +36,9 @@ function getUserTickets(event) {
                 let tableRow = document.createElement('tr');
 
                 let rowValues = [
-                    data[i].departure_station,
-                    data[i].arrival_station,
-                    moment(data[i].departure_date).format("MMM Do YYYY"),
-                    moment(data[i].departure_date).format("MMM Do YYYY"),
-                    data[i].departure_time,
-                    data[i].arrival_time
+                    data[i].train,
+                    moment(data[i].departure).format("h:mm a MMM Do YY, ddd"),
+                    moment(data[i].arrival).format("h:mm a MMM Do YY, ddd ")
                 ];
 
                 for (let k = 0; k < rowValues.length; k++) {

@@ -12,7 +12,7 @@ function buyTicket(event) {
     });
 
     $.post(
-        '/api/railways/buy_ticket/',
+        BUY_TICKET_URL,
         data,
         function (data) {
             alert('Purchased');
@@ -20,7 +20,7 @@ function buyTicket(event) {
         'json'
     ).fail(
         function () {
-           alert('ticket purchase failed'); // or whatever
+           alert('ticket purchase failed');
         }
     );
 }

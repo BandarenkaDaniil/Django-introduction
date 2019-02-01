@@ -1,4 +1,6 @@
-function getRides() {
+function getRides(event) {
+    event.preventDefault();
+
     let auth_token = getCookie('Authorization');
 
     $.ajaxSetup({
@@ -7,8 +9,18 @@ function getRides() {
         }
     });
 
+    let dataSpecifyingForm = $('#dataSpecifyingForm');
+    let submitButton = dataSpecifyingForm.find(':submit');
+    submitButton.attr('disabled', 'disabled');
+
+    let loadingSpan = $("<span></span>");
+    loadingSpan.attr('class', 'spinner-border spinner-border-sm');
+
+    submitButton.text(' Loading...');
+    submitButton.prepend(loadingSpan);
+
     $.get(
-        '/api/railways/ride/',
+        RIDE_URL,
         dataSpecifyingForm.serialize(),
         function (data) {
             let table = document.createElement('table');
@@ -16,12 +28,8 @@ function getRides() {
 
             let tableHead = document.createElement('thead');
             let columnHeaders = [
-                'From',
-                'To',
-                'Departure date',
-                'Arrival date',
-                'Departure time',
-                'Arrival time',
+                'Departure',
+                'Arrival',
                 'Price',
                 'Buy'
             ];
@@ -38,15 +46,11 @@ function getRides() {
             let tableBody = document.createElement('tbody');
 
             for (let i = 0; i < data.length; i++) {
-
                 let tableRow = document.createElement('tr');
 
                 let rowValues = [
-                    data[i].departure_station,
-                    data[i].arrival_station,
-                    moment(data[i].departure_date).format("MMM Do YYYY"),
-                    moment(data[i].departure_date).format("MMM Do YYYY"),
                     data[i].departure_time,
+                    moment(data[i].arrival_date).format("MMM Do YYYY") + '\n' +
                     data[i].arrival_time,
                     data[i].amount
                 ];
@@ -63,7 +67,10 @@ function getRides() {
 
                 let button = document.createElement('button');
                 button.setAttribute('type', 'button');
-                button.setAttribute('class', 'btn btn-primary btn-sm btn-buy-ticket');
+                button.setAttribute(
+                    'class',
+                    'btn btn-primary btn-sm btn-buy-ticket'
+                );
                 button.setAttribute('data-ride-id', data[i].id);
 
                 let buttonText = document.createTextNode('Buy');
@@ -73,20 +80,72 @@ function getRides() {
                 buttonCell.appendChild(button);
                 tableRow.appendChild(buttonCell);
 
+                let link = document.createElement('a');
+                link.setAttribute(
+                    'href',
+                    '#collapse' + i
+                );
+                link.setAttribute(
+                    'class',
+                    'collapsed card-link'
+                );
+                link.setAttribute('data-toggle', 'collapse');
+
+                let arrow = document.createElement('i');
+                arrow.setAttribute(
+                    'class',
+                    'material-icons'
+                );
+
+                let arrowText = document.createTextNode(
+                    'keyboard_arrow_down'
+                );
+                arrow.appendChild(arrowText);
+
+                link.appendChild(arrow);
+
+                let linkCell = document.createElement('td');
+                linkCell.appendChild(link);
+                tableRow.appendChild(linkCell);
+
+                let collapseDiv = document.createElement('div');
+                collapseDiv.setAttribute(
+                    'id',
+                    'collapse' + i
+                );
+                collapseDiv.setAttribute(
+                    'class',
+                    'collapse'
+                );
+                collapseDiv.setAttribute(
+                    'data-parent',
+                    '#trains'
+                );
+
+                let collapseElem = generateRideInfoCollapse(data[i].items);
+
+                collapseDiv.appendChild(collapseElem);
+
                 tableBody.appendChild(tableRow);
+                tableBody.appendChild(collapseDiv);
             }
 
             table.appendChild(tableBody);
 
-            let trains = document.getElementById('trains');
+            let trains = document.getElementById('rides');
             while (trains.firstChild) {
                 trains.removeChild(trains.firstChild)
             }
             trains.appendChild(table);
+
+            submitButton.removeAttr('disabled');
+            submitButton.text('Choose');
+
+            $("#ridesDiv").show();
         },
         'json'
     ).fail(
-        function () {
+        (data) => {
             let str = '<h2>Rides</h2>';
             str += '<div class="list-group">';
 
@@ -95,6 +154,11 @@ function getRides() {
             str += '</div>';
 
             $('#trains pre').html(str);
+
+            submitButton.removeAttr('disabled');
+            submitButton.text('Choose');
+            shake($("#dataSpecifyingDiv"));
         }
     );
+
 }

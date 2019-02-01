@@ -12,10 +12,11 @@ function registerUser(event) {
 
     event.preventDefault();
     $.post(
-        '/api/users/',
+        USER_URL,
         registerForm.serialize(),
         function (data) {
-            let message = 'Success! You will be now redirected to the home page!';
+            let message =
+                'Success! You will be now redirected to the home page!';
 
             let alert = generateAlert(message, 'alert-success');
 
@@ -40,21 +41,22 @@ function registerUser(event) {
                 console.log(values[i]);
                 input.tooltip({
                     'trigger':'hover',
-                    'title': values[i].join(','),
-                    track:true});
-                input.attr('class', 'form-control is-invalid');
+                    'title': values[i].join(',')});
+                // input.attr('class', 'form-control is-invalid');
+
             }
 
-            let message = 'Invalid input. Point highlighted inputs to get more info.';
+            let message =
+                'Invalid input. Point highlighted inputs to get more info.';
 
             let alert = generateAlert(message, 'alert-danger');
 
-            $('.card-body').find('.messages').prepend(alert);
+            $('.card-body').find('.messages').empty().prepend(alert);
 
             submitButton.removeAttr('disabled');
-            submitButton.text('Register');
+            submitButton.text('Submit');
 
-            shake($(".card"));
+            shake($("#registerDiv"));
         }
     );
 }
