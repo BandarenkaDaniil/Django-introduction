@@ -22,8 +22,6 @@ $ ./pre_run_setup.sh
 $ docker-compose up
 ```
 
-! After first running you don't need to run ***./pre_run_setup***, only one time
-
 ### Stop
 
 Press ***Ctrl+C*** to stop containers running 
