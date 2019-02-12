@@ -145,18 +145,24 @@ function getRides(event) {
         },
         'json'
     ).fail(
-        (data) => {
-            let str = '<h2>Rides</h2>';
-            str += '<div class="list-group">';
+        (response) => {
+            let errors = JSON.parse(response.responseText);
 
-            str += 'No rides for this data';
+            $('#dataSpecifyingForm').find('input').removeClass(
+                'is-invalid'
+            );
 
-            str += '</div>';
+            Object.entries(errors).map(entry => {
+                let errorInput = $(`#${entry[0]}`);
 
-            $('#trains pre').html(str);
+                errorInput.addClass('is-invalid');
+
+                errorInput.next().text(entry[1]);
+            });
 
             submitButton.removeAttr('disabled');
             submitButton.text('Choose');
+
             shake($("#dataSpecifyingDiv"));
         }
     );
