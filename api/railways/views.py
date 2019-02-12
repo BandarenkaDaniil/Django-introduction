@@ -2,6 +2,7 @@ from django.http import JsonResponse
 
 from rest_framework import generics, permissions
 from rest_framework import views
+from rest_framework.exceptions import NotFound
 
 from api.railways.serializers import (
     SpecificRideSerializer,
@@ -40,12 +41,24 @@ class SpecificRidesAPI(generics.ListAPIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
-        departure_station = Station.objects.get(
-            title=self.request.query_params.get('departure_station', None)
-        )
-        arrival_station = Station.objects.get(
-            title=self.request.query_params.get('arrival_station', None)
-        )
+        try:
+            departure_station = Station.objects.get(
+                title=self.request.query_params.get('departure_station', None)
+            )
+        except Station.DoesNotExist:
+            raise NotFound({
+                'departure_station': 'This station does not exist'
+            })
+
+        try:
+            arrival_station = Station.objects.get(
+                title=self.request.query_params.get('arrival_station', None)
+            )
+        except Station.DoesNotExist:
+            raise NotFound({
+                'arrival_station': 'This station does not exist'
+            })
+
         departure_date = self.request.query_params.get('departure_date', None)
 
         return Ride.objects.filter(
@@ -56,7 +69,6 @@ class SpecificRidesAPI(generics.ListAPIView):
 
     def list(self, request, *args, **kwargs):
         serializer = SpecificRideSerializer(data=request.query_params)
-
         serializer.is_valid(raise_exception=True)
 
         return super().list(request, *args, **kwargs)
@@ -98,6 +110,5 @@ class BuyTicket(views.APIView):
 
 
 class TicketDetailAPI(generics.RetrieveUpdateDestroyAPIView):
-
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
