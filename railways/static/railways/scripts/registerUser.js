@@ -30,28 +30,20 @@ function registerUser(event) {
         },
         'text'
     ).fail(
-        (data) => {
-            let responseText = JSON.parse(data['responseText']);
+        (response) => {
+            let errors = JSON.parse(response['responseText']);
 
-            let values = Object.values(responseText);
-            let keys = Object.keys(responseText);
+            $('#registerForm').find('input').removeClass(
+                'is-invalid'
+            );
 
-            for (let i = 0; i < values.length; i++) {
-                let input = $(`input[name=${keys[i]}]`);
-                console.log(values[i]);
-                input.tooltip({
-                    'trigger':'hover',
-                    'title': values[i].join(',')});
-                // input.attr('class', 'form-control is-invalid');
+            Object.entries(errors).map(entry => {
+                let errorInput = $(`#${entry[0]}`);
 
-            }
+                errorInput.addClass('is-invalid');
 
-            let message =
-                'Invalid input. Point highlighted inputs to get more info.';
-
-            let alert = generateAlert(message, 'alert-danger');
-
-            $('.card-body').find('.messages').empty().prepend(alert);
+                errorInput.next().text(entry[1]);
+            });
 
             submitButton.removeAttr('disabled');
             submitButton.text('Submit');
