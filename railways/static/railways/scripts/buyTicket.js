@@ -12,7 +12,7 @@ function buyTicket(event) {
     });
 
     $.post(
-        BUY_TICKET_URL,
+        TICKETS_URL,
         data,
         function (data) {
             alert('Purchased');
