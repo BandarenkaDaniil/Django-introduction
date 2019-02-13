@@ -1,12 +1,9 @@
 import itertools
-import yaml
-
 from datetime import date, time
 
+import yaml
 from django.contrib.auth.hashers import make_password
-from django.core.management.base import BaseCommand
-
-from railways.utils import calculate_amount
+from django.core.management.base import BaseCommand, CommandError
 
 from railways.models import (
     Ride,
@@ -18,76 +15,84 @@ from railways.models import (
     Track
 )
 
+from railways.utils import calculate_amount, get_logger
+
 from users.models import User
+
+logger = get_logger(filename='logs/generate_test_data.log')
 
 
 class Command(BaseCommand):
     help = 'Generate test data for project\'s database'
 
     @staticmethod
+    def generate_error_message(error_type, exception):
+        return (
+            'Cannot generate data. {} error: {}'.format(
+                error_type,
+                str(exception)
+            )
+        )
+
+    @staticmethod
     def generate_stations():
         filename = 'test_data/stations.yaml'
 
         with open(filename, 'r') as file:
-            try:
-                test_data = yaml.load(file)
-                for station in test_data['stations']:
-                    Station.objects.create(
-                        title=station['title'],
-                        country=station['country']
-                    )
-            except yaml.YAMLError as exc:
-                print(exc)
+            test_data = yaml.load(file)
+            for station in test_data['stations']:
+                Station.objects.create(
+                    title=station['title'],
+                    country=station['country']
+                )
+
+        logger.info('Stations generated.')
 
     @staticmethod
     def generate_users():
         filename = 'test_data/users.yaml'
 
         with open(filename, 'r') as file:
-            try:
-                test_data = yaml.load(file)
-                for user in test_data['users']:
-                    User.objects.create(
-                        email=user['email'],
-                        first_name=user['first_name'],
-                        last_name=user['last_name'],
-                        password=make_password(user['password'])
-                    )
-            except yaml.YAMLError as exc:
-                print(exc)
+            test_data = yaml.load(file)
+            for user in test_data['users']:
+                User.objects.create(
+                    email=user['email'],
+                    first_name=user['first_name'],
+                    last_name=user['last_name'],
+                    password=make_password(user['password'])
+                )
 
-        print('Stations generated.')
+        logger.info('Users generated.')
 
     @staticmethod
     def generate_tracks():
         filename = 'test_data/tracks.yaml'
 
         with open(filename, 'r') as file:
-            try:
-                test_data = yaml.load(file)
-                for track in test_data['tracks']:
-                    # create two-directional logical
-                    # track via two database tracks
-                    Track.objects.create(
-                        departure_station=Station.objects.get(
-                            title=track['departure_station']
-                        ),
-                        arrival_station=Station.objects.get(
-                            title=track['arrival_station']
-                        ),
-                        length=track['length']
-                    )
-                    Track.objects.create(
-                        departure_station=Station.objects.get(
-                            title=track['arrival_station']
-                        ),
-                        arrival_station=Station.objects.get(
-                            title=track['departure_station']
-                        ),
-                        length=track['length']
-                    )
-            except yaml.YAMLError as exc:
-                print(exc)
+            test_data = yaml.load(file)
+            for track in test_data['tracks']:
+                # create two-directional logical
+                # track via two database tracks
+                Track.objects.create(
+                    departure_station=Station.objects.get(
+                        title=track['departure_station']
+                    ),
+                    arrival_station=Station.objects.get(
+                        title=track['arrival_station']
+                    ),
+                    length=track['length']
+                )
+                Track.objects.create(
+                    departure_station=Station.objects.get(
+                        title=track['arrival_station']
+                    ),
+                    arrival_station=Station.objects.get(
+                        title=track['departure_station']
+                    ),
+                    length=track['length']
+                )
+
+        logger.info('Tracks generated.')
 
     @staticmethod
     def generate_route_items(route, stations):
@@ -144,61 +149,72 @@ class Command(BaseCommand):
 
             Command.generate_tickets(ride=new_ride, tickets=ride['tickets'])
 
-        print('Tracks generated.')
-
     @staticmethod
     def generate_routes():
         filename = 'test_data/routes_rides_trains_tickets.yaml'
 
         with open(filename, 'r') as file:
-            try:
-                test_data = yaml.load(file)
+            test_data = yaml.load(file)
 
-                for route in test_data['routes']:
-                    # Route departure and arrival stations are
-                    # departure station of the first track in sequence and
-                    # arrival of the last.
-                    # Even if sequence consists of one track.
-                    new_route = Route.objects.create(
-                        departure_station=Station.objects.get(
-                            title=route['stations'][0]
-                        ),
-                        arrival_station=Station.objects.get(
-                            title=route['stations'][-1]
-                        )
+            for route in test_data['routes']:
+                # Route departure and arrival stations are
+                # departure station of the first track in sequence and
+                # arrival of the last.
+                # Even if sequence consists of one track.
+                new_route = Route.objects.create(
+                    departure_station=Station.objects.get(
+                        title=route['stations'][0]
+                    ),
+                    arrival_station=Station.objects.get(
+                        title=route['stations'][-1]
                     )
+                )
 
-                    Command.generate_train(route=new_route)
+                Command.generate_train(route=new_route)
 
-                    Command.generate_route_items(
-                        route=new_route,
-                        stations=route['stations']
-                    )
+                Command.generate_route_items(
+                    route=new_route,
+                    stations=route['stations']
+                )
 
-                    Command.generate_rides(
-                        route=new_route,
-                        rides=route['rides']
-                    )
+                Command.generate_rides(
+                    route=new_route,
+                    rides=route['rides']
+                )
 
-            except yaml.YAMLError as exc:
-                print(exc)
+        logger.info('Routes generated.')
 
     @staticmethod
     def generate_data():
-        Command.generate_stations()
-        Command.generate_users()
-        Command.generate_tracks()
-        Command.generate_routes()
+        try:
+            Command.generate_stations()
+            Command.generate_users()
+            Command.generate_tracks()
+            Command.generate_routes()
+        except yaml.YAMLError as e:
+            logger.error(
+                Command.generate_error_message('yaml', e)
+            )
+            raise CommandError(
+                Command.generate_error_message('yaml', e)
+            )
 
-        print('Routes generated.')
-
-    def handle(self, *args, **options):
-        print('Start generating...')
+    @staticmethod
+    def drop_database():
+        logger.info('Start current database dropping...')
 
         # deleting all stations is enough to drop all data for now
         Station.objects.all().delete()
         User.objects.all().delete()
 
+        logger.info('Database dropped.')
+
+    def handle(self, *args, **options):
+        print('Start generating...')
+        logger.info('Start generating...')
+
+        self.drop_database()
         self.generate_data()
 
         print('Done.')
+        logger.info('Done.')
