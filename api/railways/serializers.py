@@ -206,7 +206,7 @@ class TicketBuySerializer(serializers.Serializer):
 
     def create(self, validated_data):
         ride = Ride.objects.get(id=validated_data['ride_id'])
-        print(validated_data)
+
         customer = User.objects.get(email=validated_data['user_email'])
 
         return Ticket.objects.create(customer=customer, ride=ride)
