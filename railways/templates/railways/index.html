@@ -24,8 +24,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="loginModal">
-        <div class="modal-dialog modal-sm">
+    <div class="modal mx-auto w-50 fade" id="loginModal">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title">Login</h3>
@@ -39,12 +39,14 @@
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
-                            <i class="material-icons">mail_outline</i>
-                        </span>
+                                    <i class="material-icons">mail_outline</i>
+                                </span>
                             </div>
                             <input type="email" class="form-control"
                                    placeholder="Email" id="email"
                                    name="email">
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
 
                         <div class="input-group mb-3">
@@ -56,6 +58,9 @@
                             <input type="password" class="form-control"
                                    placeholder="Password" id="password"
                                    name="password">
+
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
 
                         <button type="submit"
@@ -77,14 +82,14 @@
                     <label for="departure_station">Departure station:</label>
                     <input type="text" class="form-control"
                            id="departure_station"
-                           name="departure_station" >
+                           name="departure_station">
                     <div class="invalid-feedback">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="arrival_station">Arrival station:</label>
                     <input type="text" class="form-control" id="arrival_station"
-                           name="arrival_station" >
+                           name="arrival_station">
                     <div class="invalid-feedback">
                     </div>
                 </div>
@@ -92,7 +97,7 @@
                 <div class="form-group">
                     <label for="departure_date">Departure date:</label>
                     <input type="date" class="form-control" id="departure_date"
-                           name="departure_date" >
+                           name="departure_date">
                     <div class="invalid-feedback">
                     </div>
                 </div>

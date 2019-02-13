@@ -2,11 +2,10 @@ from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 
 from rest_framework import generics
-from rest_framework.views import APIView
 from rest_framework.authtoken.views import Token
+from rest_framework.views import APIView
 
 from api.users.serializers import UserLoginSerializer, UserSerializer
-
 from users.models import User
 
 
@@ -36,8 +35,10 @@ class Login(APIView):
             )
         else:
             return JsonResponse(
-                {'Error': 'There\'s no user with credentials provided or '
-                          'password is incorrect'},
+                {
+                    'password': 'There\'s no user with credentials '
+                                'provided or password is incorrect'
+                },
                 status=400
             )
 

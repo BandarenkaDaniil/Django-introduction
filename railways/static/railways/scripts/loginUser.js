@@ -27,7 +27,21 @@ function loginUser(event) {
         },
         'text'
     ).fail(
-        () => {
+        (response) => {
+            let errors = JSON.parse(response.responseText);
+
+            $('#loginForm').find('input').removeClass(
+                'is-invalid'
+            );
+
+            Object.entries(errors).map(entry => {
+                let errorInput = $(`#${entry[0]}`);
+
+                errorInput.addClass('is-invalid');
+
+                errorInput.next().text(entry[1]);
+            });
+
             submitButton.removeAttr('disabled');
             submitButton.text('Submit');
 
