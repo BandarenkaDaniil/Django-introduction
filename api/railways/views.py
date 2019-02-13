@@ -75,11 +75,31 @@ class SpecificRidesAPI(generics.ListAPIView):
 
 
 class TicketListAPI(generics.ListCreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
 
+    def post(self, request, *args, **kwargs):
+        data = request.data.dict()
 
-class UserTicket(generics.ListAPIView):
+        data['user_email'] = request.user.email
+
+        serializer = TicketBuySerializer(data=data)
+
+        serializer.is_valid(raise_exception=True)
+
+        serializer.save()
+
+        return JsonResponse(
+            {
+                'Purchase status': ['Success', ]
+            },
+            status=201
+        )
+
+
+class UserTickets(generics.ListAPIView):
     serializer_class = UserTicketsSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
