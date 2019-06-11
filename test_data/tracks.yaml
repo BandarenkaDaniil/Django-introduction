@@ -1,0 +1,40 @@
+tracks:
+    - departure_station: Brest
+      arrival_station: Zhabinka
+      length: 26
+
+    - departure_station: Zhabinka
+      arrival_station: Baranovichi
+      length: 176
+
+    - departure_station: Zhabinka
+      arrival_station: Kobrin
+      length: 25
+
+    - departure_station: Kobrin
+      arrival_station: Pinsk
+      length: 121
+
+    - departure_station: Pinsk
+      arrival_station: Gomel
+      length: 360
+
+    - departure_station: Baranovichi
+      arrival_station: Minsk
+      length: 143
+
+    - departure_station: Minsk
+      arrival_station: Mogilev
+      length: 243
+
+    - departure_station: Minsk
+      arrival_station: Orsha
+      length: 212
+
+    - departure_station: Orsha
+      arrival_station: Smolensk
+      length: 119
+
+    - departure_station: Smolensk
+      arrival_station: Moscow
+      length: 419

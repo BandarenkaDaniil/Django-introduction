@@ -1,0 +1,81 @@
+{% extends 'railways/base.html' %}
+{% load static %}
+
+{% block header %}
+
+{% endblock header %}
+
+{% block content %}
+    <script src="{% static 'railways/scripts/registerUser.js' %}">
+    </script>
+
+    <script src="{% static 'railways/scripts/utils.js' %}">
+    </script>
+
+    <div class="card shadow-lg mx-auto w-25 mt-5 " id="registerDiv">
+        <h3 class="card-header">Register</h3>
+        <div class="card-body">
+            <div class="messages"></div>
+
+            <form id="registerForm">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i
+                                class="material-icons">mail_outline</i></span>
+                    </div>
+                    <input type="email" class="form-control"
+                           placeholder="Email" id="email"
+                           name="email">
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text ">
+                            <i class="material-icons ">person_outline</i>
+                        </span>
+                    </div>
+                    <input type="text" class="form-control"
+                           placeholder="First Name" id="firstName"
+                           name="first_name">
+                    <input type="text" class="form-control"
+                           placeholder="Last Name"
+                           id="lastName"
+                           name="last_name">
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="material-icons">lock_outline</i>
+                        </span>
+                    </div>
+                    <input type="password" class="form-control"
+                           placeholder="Password" id="password2"
+                           name="password2">
+                    <input type="password" class="form-control invalid"
+                           placeholder="Password again" id="password"
+                           name="password">
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+
+                <button type="submit"
+                        class="btn btn-outline-success float-right"
+                        id="submitButton">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $("#registerForm").on(
+            "submit",
+            registerUser
+        )
+    </script>
+{% endblock %}

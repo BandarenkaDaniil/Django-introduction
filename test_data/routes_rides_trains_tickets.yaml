@@ -1,0 +1,62 @@
+routes:
+    - stations:
+        - Brest
+        - Zhabinka
+        - Kobrin
+        - Pinsk
+        - Gomel
+      train:
+        # train
+      rides:
+          - departure_date: [2019, 1, 15]
+            departure_time: [12, 00]
+            arrival_date:   [2019, 1, 15]
+            arrival_time:   [21, 00]
+            tickets:
+                - customer: andrey@example.com
+
+    - stations:
+        - Brest
+        - Zhabinka
+        - Baranovichi
+        - Minsk
+      train:
+        # train
+      rides:
+          - departure_date: [2019, 1, 15]
+            departure_time: [6, 20]
+            arrival_date:   [2019, 1, 15]
+            arrival_time:   [9, 35]
+            tickets:
+                - customer: ivan@example.com
+                - customer: andrey@example.com
+
+    - stations:
+        - Minsk
+        - Mogilev
+      train:
+        # train
+      rides:
+          - departure_date: [2019, 1, 16]
+            departure_time: [12, 00]
+            arrival_date:   [2019, 1, 16]
+            arrival_time:   [21, 00]
+            tickets:
+                - customer: vladimir@example.com
+
+    - stations:
+        - Minsk
+        - Orsha
+        - Smolensk
+        - Moscow
+      train:
+        # train
+      rides:
+          - departure_date: [2019, 2, 10]
+            departure_time: [8, 00]
+            arrival_date:   [2019, 2, 10]
+            arrival_time:   [20, 00]
+            tickets:
+                - customer: andrey@example.com
+                - customer: vladimir@example.com
+                - customer: ivan@example.com

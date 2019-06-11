@@ -1,0 +1,33 @@
+stations:
+    - title: Brest
+      country: Belarus
+
+    - title: Zhabinka
+      country: Belarus
+
+    - title: Kobrin
+      country: Belarus
+
+    - title: Pinsk
+      country: Belarus
+
+    - title: Baranovichi
+      country: Belarus
+
+    - title: Minsk
+      country: Belarus
+
+    - title: Mogilev
+      country: Belarus
+
+    - title: Gomel
+      country: Belarus
+
+    - title: Orsha
+      country: Belarus
+
+    - title: Smolensk
+      country: Russia
+
+    - title: Moscow
+      country: Russia

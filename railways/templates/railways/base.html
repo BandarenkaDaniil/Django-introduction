@@ -1,0 +1,113 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+{#    <link rel='stylesheet'#}
+{#          href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'#}
+{#          integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9#}
+{#          S+oqd12jhcu+A56Ebc1zFSJ'#}
+{#          crossorigin='anonymous'>#}
+
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    {% block header %}
+    {% endblock header %}
+</head>
+
+<body background="{% static 'railways/images/bg_pattern.png' %}">
+
+<script src="{% static 'railways/scripts/url_endpoints_config.js' %}">
+</script>
+
+<script src="{% static 'railways/scripts/setupPage.js' %}">
+</script>
+
+<script src="{% static 'railways/scripts/moment.js' %}">
+</script>
+
+<script src="{% static 'railways/scripts/utils.js' %}">
+</script>
+
+<script src="{% static 'railways/scripts/getRides.js' %}">
+</script>
+
+<script src="{% static 'railways/scripts/buyTicket.js' %}">
+</script>
+
+<script src="{% static 'railways/scripts/logout.js' %}">
+</script>
+
+<script src="{% static 'railways/scripts/getUserTickets.js' %}">
+</script>
+
+<script src="{% static 'railways/scripts/loginUser.js' %}">
+</script>
+
+<script src="{% static 'railways/scripts/registerUser.js' %}">
+</script>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Railways</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="http://localhost:8000">Home <span
+                        class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item" id="registerNavButton">
+                <a class="nav-link" href="{% url 'railways:register' %}">
+                    Register
+                </a>
+            </li>
+            <li class="nav-item" id="cartNavButton" style="display: none">
+                <a class="nav-link" href="#" data-toggle="modal"
+                   data-target="#cartModal">Cart</a>
+            </li>
+            <li class="nav-item" id="loginNavButton" style="display: none">
+                <a class="nav-link" href="#" data-toggle="modal"
+                   data-target="#loginModal">Login</a>
+            </li>
+            <li class="nav-item" id="logoutNavButton" style="display: none">
+                <a class="nav-link" href="#">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+{% block content %}
+
+{% endblock content %}
+
+
+<div class="row fixed-bottom text-center bg-light text-muted">
+    <div class="col-sm-12">
+        © 2019 Copyright: ITechArt Group
+    </div>
+
+    <div class="col-sm-12">
+        <a href="https://github.com/BondarenkoDaniil">
+            Developer's page
+        </a>
+    </div>
+</div>
+</body>
+</html>
