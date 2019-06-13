@@ -42,8 +42,4 @@ If you don't want to register, you can use one of pre created users to log in:
 - vladimir@example.com - vladimir777
 - ivan@example.com - ivan1234
 
-### Todos
-
-- ***IMPROVE UI URGENTLY!!!***
-
 
