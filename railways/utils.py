@@ -1,19 +1,24 @@
 import logging
 
-from railways import settings
+from railways import constants
 
 
-def calculate_amount(route):
+def calculate_route_cost(route):
     total_ride_length = 0
+
     for item in route.items.all():
         total_ride_length += item.track.length
 
-    return settings.COST_PER_KM * total_ride_length
+    return constants.COST_PER_KM * total_ride_length
 
 
-def get_logger(name='railways_logger', filename='logs/logs.log'):
+def get_logger(
+        name='railways_logger',
+        filename='logs/logs.log',
+        logging_level=logging.INFO
+):
     logger = logging.getLogger(name)
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging_level)
 
     log_file_handler = logging.FileHandler(filename)
 

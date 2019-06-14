@@ -15,7 +15,7 @@ from railways.models import (
     Track
 )
 
-from railways.utils import calculate_amount, get_logger
+from railways.utils import calculate_route_cost, get_logger
 
 from users.models import User
 
@@ -40,6 +40,7 @@ class Command(BaseCommand):
 
         with open(filename, 'r') as file:
             test_data = yaml.load(file)
+
             for station in test_data['stations']:
                 Station.objects.create(
                     title=station['title'],
@@ -132,7 +133,7 @@ class Command(BaseCommand):
     @staticmethod
     def generate_rides(route, rides):
         for ride in rides:
-            amount = calculate_amount(route)
+            amount = calculate_route_cost(route)
 
             total_ride_length = 0
             for item in route.items.all():

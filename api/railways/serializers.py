@@ -16,7 +16,7 @@ from railways.models import (
 
 from users.models import User
 
-from railways.utils import calculate_amount
+from railways.utils import calculate_route_cost
 
 
 class TrainSerializer(serializers.ModelSerializer):
@@ -237,15 +237,15 @@ class RideSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        validated_data['amount'] = calculate_amount(validated_data['route'])
+        validated_data['amount'] = calculate_route_cost(validated_data['route'])
 
         return super().create(validated_data)
 
     def update(self, instance, validated_data):
         # if this ride's route is being changed
-        # we need to recalculate its amount
+        # we need to recalculate its cost
         if instance.route != validated_data['route']:
-            validated_data['amount'] = calculate_amount(validated_data['route'])
+            validated_data['amount'] = calculate_route_cost(validated_data['route'])
 
         return super().update(instance, validated_data)
 

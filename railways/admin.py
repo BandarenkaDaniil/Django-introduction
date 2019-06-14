@@ -1,13 +1,14 @@
 from django.contrib import admin
 
-from .models import Ride
-from .models import Route
-from .models import RouteItem
-from .models import Station
-from .models import Ticket
-from .models import Train
-from .models import Track
-
+from .models import (
+    Ride,
+    Route,
+    RouteItem,
+    Station,
+    Ticket,
+    Train,
+    Track,
+)
 
 admin.site.register(Ride)
 admin.site.register(Route)
