@@ -222,13 +222,13 @@ class RideSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ride
         fields = (
-            'id', 'route', 'amount',
+            'id', 'route', 'cost',
             'departure_station', 'arrival_station',
             'departure_date', 'arrival_date',
             'departure_time', 'arrival_time',
             'tickets'
         )
-        read_only_fields = ('amount',)
+        read_only_fields = ('cost',)
 
     def validate(self, attrs):
         if attrs['arrival_date'] <= attrs['departure_date']:
@@ -237,7 +237,7 @@ class RideSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        validated_data['amount'] = calculate_route_cost(validated_data['route'])
+        validated_data['cost'] = calculate_route_cost(validated_data['route'])
 
         return super().create(validated_data)
 
@@ -245,7 +245,7 @@ class RideSerializer(serializers.ModelSerializer):
         # if this ride's route is being changed
         # we need to recalculate its cost
         if instance.route != validated_data['route']:
-            validated_data['amount'] = calculate_route_cost(validated_data['route'])
+            validated_data['cost'] = calculate_route_cost(validated_data['route'])
 
         return super().update(instance, validated_data)
 
@@ -268,13 +268,13 @@ class SpecificRideSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ride
         fields = (
-            'id', 'amount',
+            'id', 'cost',
             'departure_station', 'arrival_station',
             'departure_date', 'arrival_date',
             'departure_time', 'arrival_time',
             'items'
         )
         read_only_fields = (
-            'amount', 'arrival_date', 'departure_time',
+            'cost', 'arrival_date', 'departure_time',
             'arrival_time',
         )

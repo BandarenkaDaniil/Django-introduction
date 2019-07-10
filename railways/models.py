@@ -99,7 +99,7 @@ class Ride(TimestampableModelMixin, models.Model):
         related_name='rides'
     )
 
-    amount = models.PositiveIntegerField()
+    cost = models.PositiveIntegerField()
 
     departure_date = models.DateField()
     departure_time = models.TimeField()

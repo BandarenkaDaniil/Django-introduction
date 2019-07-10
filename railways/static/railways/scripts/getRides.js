@@ -52,9 +52,9 @@ function getRides(event) {
                     data[i].departure_time,
                     moment(data[i].arrival_date).format("MMM Do YYYY") + '\n' +
                     data[i].arrival_time,
-                    data[i].amount
+                    data[i].cost
                 ];
-
+                console.log(data);
                 for (let k = 0; k < rowValues.length; k++) {
                     let rowCell = document.createElement('td');
                     rowCell.setAttribute('class', 'align-middle');

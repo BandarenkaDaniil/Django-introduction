@@ -133,7 +133,7 @@ class Command(BaseCommand):
     @staticmethod
     def generate_rides(route, rides):
         for ride in rides:
-            amount = calculate_route_cost(route)
+            cost = calculate_route_cost(route)
 
             total_ride_length = 0
             for item in route.items.all():
@@ -144,7 +144,7 @@ class Command(BaseCommand):
                 departure_time=time(*ride['departure_time']),
                 arrival_date=date(*ride['arrival_date']),
                 arrival_time=time(*ride['arrival_time']),
-                amount=amount,
+                cost=cost,
                 route=route
             )
 
