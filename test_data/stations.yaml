@@ -1,33 +1,55 @@
 stations:
     - title: Brest
       country: Belarus
+      latitude: 52.09
+      longitude: 23.73
 
     - title: Zhabinka
       country: Belarus
+      latitude: 52.19
+      longitude: 24.01
 
     - title: Kobrin
       country: Belarus
+      latitude: 52.21
+      longitude: 24.35
 
     - title: Pinsk
       country: Belarus
+      latitude: 52.11
+      longitude: 26.10
 
     - title: Baranovichi
       country: Belarus
+      latitude: 53.13
+      longitude: 26.017
 
     - title: Minsk
       country: Belarus
+      latitude: 53.90
+      longitude: 27.56
 
     - title: Mogilev
       country: Belarus
+      latitude: 53.90
+      longitude: 30.33
 
     - title: Gomel
       country: Belarus
+      latitude: 52.44
+      longitude: 30.98
 
     - title: Orsha
       country: Belarus
+      latitude: 54.50
+      longitude: 30.41
 
     - title: Smolensk
       country: Russia
+      latitude: 54.79
+      longitude: 32.05
 
     - title: Moscow
       country: Russia
+      latitude: 55.75
+      longitude: 37.61
