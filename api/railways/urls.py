@@ -6,6 +6,7 @@ from api.railways import views
 
 urlpatterns = [
     path('rides/', views.SpecificRidesAPI.as_view()),
+    path('stations/', views.StationListAPI.as_view()),
     path('tickets/', views.TicketListAPI.as_view()),
 ]
 

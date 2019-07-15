@@ -28,7 +28,7 @@ class TrainSerializer(serializers.ModelSerializer):
 class StationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Station
-        fields = ('id', 'title', 'country')
+        fields = ('id', 'title', 'country', 'latitude', 'longitude')
         validators = [
             UniqueTogetherValidator(
                 queryset=Station.objects.all(),

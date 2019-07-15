@@ -5,12 +5,13 @@ from rest_framework import views
 from rest_framework.exceptions import NotFound
 
 from api.railways.serializers import (
-    SpecificRideSerializer,
-    UserTicketsSerializer,
-    RouteSerializer,
     RouteItemSerializer,
-    TicketSerializer,
+    RouteSerializer,
+    SpecificRideSerializer,
+    StationSerializer,
     TicketBuySerializer,
+    TicketSerializer,
+    UserTicketsSerializer,
 )
 
 from railways.models import (
@@ -20,6 +21,13 @@ from railways.models import (
     Station,
     Ticket,
 )
+
+
+class StationListAPI(generics.ListCreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    queryset = Station.objects.all()
+    serializer_class = StationSerializer
 
 
 class RouteListAPI(generics.ListCreateAPIView):
