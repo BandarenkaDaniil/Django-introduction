@@ -44,7 +44,10 @@ class Command(BaseCommand):
             for station in test_data['stations']:
                 Station.objects.create(
                     title=station['title'],
-                    country=station['country']
+                    country=station['country'],
+                    latitude=station['latitude'],
+                    longitude=station['longitude'],
+
                 )
 
         logger.info('Stations generated.')
