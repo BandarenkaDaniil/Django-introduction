@@ -7,6 +7,8 @@ from railways.mixins.timestampable import TimestampableModelMixin
 class Station(TimestampableModelMixin, models.Model):
     title = models.CharField(max_length=40)
     country = models.CharField(max_length=40)
+    longitude = models.FloatField()
+    latitude = models.FloatField()
 
     def __str__(self):
         return (
