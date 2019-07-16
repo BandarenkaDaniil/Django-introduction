@@ -8,9 +8,9 @@ routes:
       train:
         # train
       rides:
-          - departure_date: [2019, 1, 15]
+          - departure_date: [2019, 7, 16]
             departure_time: [12, 00]
-            arrival_date:   [2019, 1, 15]
+            arrival_date:   [2019, 7, 16]
             arrival_time:   [21, 00]
             tickets:
                 - customer: andrey@example.com
@@ -23,9 +23,9 @@ routes:
       train:
         # train
       rides:
-          - departure_date: [2019, 1, 15]
+          - departure_date: [2019, 7, 16]
             departure_time: [6, 20]
-            arrival_date:   [2019, 1, 15]
+            arrival_date:   [2019, 7, 16]
             arrival_time:   [9, 35]
             tickets:
                 - customer: ivan@example.com
@@ -37,9 +37,9 @@ routes:
       train:
         # train
       rides:
-          - departure_date: [2019, 1, 16]
+          - departure_date: [2019, 7, 16]
             departure_time: [12, 00]
-            arrival_date:   [2019, 1, 16]
+            arrival_date:   [2019, 7, 16]
             arrival_time:   [21, 00]
             tickets:
                 - customer: vladimir@example.com
@@ -52,9 +52,9 @@ routes:
       train:
         # train
       rides:
-          - departure_date: [2019, 2, 10]
+          - departure_date: [2019, 8, 10]
             departure_time: [8, 00]
-            arrival_date:   [2019, 2, 10]
+            arrival_date:   [2019, 8, 10]
             arrival_time:   [20, 00]
             tickets:
                 - customer: andrey@example.com
