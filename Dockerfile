@@ -3,11 +3,11 @@ FROM python:3.6
 
 ENV PYTHONUNBUFFERED 1
 
-RUN mkdir -p /opt/services/django_introduction/src
-WORKDIR /opt/services/django_introduction/src
+RUN mkdir -p /django_introduction/src
+WORKDIR /django_introduction/src
 
 # copy our project code
-COPY . /opt/services/django_introduction/src
+COPY . /django_introduction/src
 
 RUN pip3 install -r requirements.txt
 
